@@ -1,0 +1,1678 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Meine Links</title>
+<link id="pre" rel="preconnect" href="https://fonts.googleapis.com">
+<link id="fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style id="css">
+  /* Layout: one left-aligned column. Oversized name, link rows that fill on hover, a quiet members area below. */
+  :root {
+    --bg: #fafafa;
+    --fg: #0a0a0a;
+    --muted: #6b6b6b;
+    --line: #e2e2e2;
+    --invert-bg: #0a0a0a;
+    --invert-fg: #fafafa;
+    --font-body: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --ease: cubic-bezier(.2, .8, .2, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a0a0a; --fg: #f5f5f5; --muted: #8f8f8f; --line: #262626;
+      --invert-bg: #f5f5f5; --invert-fg: #0a0a0a; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a0a0a; --fg: #f5f5f5; --muted: #8f8f8f; --line: #262626;
+    --invert-bg: #f5f5f5; --invert-fg: #0a0a0a; color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    padding-inline: 20px;
+    padding-block: 28px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  body.has-bar { padding-bottom: 120px; }
+  .wrap { max-width: 720px; margin-inline: auto; display: flex; flex-direction: column; gap: 72px; }
+
+  /* entrance, first paint only */
+  .intro .sec { animation: rise .7s var(--ease) both; }
+  .intro .sec:nth-child(2) { animation-delay: .06s; }
+  .intro .sec:nth-child(3) { animation-delay: .12s; }
+  .intro .sec:nth-child(4) { animation-delay: .18s; }
+  .intro .sec:nth-child(5) { animation-delay: .24s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pop { from { opacity: 0; transform: translateY(12px) scale(.97); } to { opacity: 1; transform: none; } }
+  @keyframes shake { 0%, 100% { transform: none; } 20% { transform: translateX(-7px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+
+  /* header */
+  header.top { display: flex; justify-content: flex-end; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
+  .mark { font-family: var(--font-mono); font-size: 13px; letter-spacing: .02em; color: var(--muted); }
+  .actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; font: 500 13px/1 var(--font-mono); min-width: 0; padding-right: 6px; }
+  .chip .cn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 14ch; }
+  .tag { font: 500 11px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--fg); border-radius: 999px; padding: 4px 8px; }
+  .av { width: 28px; height: 28px; border-radius: 8px; background: var(--fg); color: var(--bg); padding: 5px; display: grid; flex: none; transition: transform .35s var(--ease), border-radius .35s var(--ease); }
+  .chip:hover .av { transform: rotate(-6deg) scale(1.06); border-radius: 12px; }
+  .av svg, .bigav svg { width: 100%; height: 100%; display: block; }
+
+  /* buttons: fill wipes up on hover */
+  .btn {
+    position: relative; isolation: isolate; overflow: hidden;
+    font: 500 13px/1 var(--font-mono);
+    padding: 10px 16px; border-radius: 999px;
+    border: 1px solid var(--fg); background: transparent; color: var(--fg);
+    cursor: pointer;
+    transition: color .3s, border-color .3s, transform .2s var(--ease);
+  }
+  .btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--fg); transform: translateY(102%); transition: transform .38s var(--ease); }
+  .btn:hover::before { transform: none; }
+  .btn:hover { color: var(--bg); }
+  .btn:active { transform: scale(.96); }
+  .btn.solid { background: var(--fg); color: var(--bg); }
+  .btn.solid::before { background: var(--bg); }
+  .btn.solid:hover { color: var(--fg); }
+  .btn.ghost { border-color: var(--line); }
+  .btn.ghost:hover { border-color: var(--fg); }
+  .btn.icon { padding: 10px 11px; display: grid; place-items: center; }
+  .btn.wide { width: 100%; padding: 14px 16px; font-size: 14px; }
+  .btn:disabled { opacity: .4; cursor: not-allowed; pointer-events: none; }
+  .btn:focus-visible, .ib:focus-visible, .row:focus-visible, .tab:focus-visible, .bm a:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+
+  /* hero */
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .dstat { display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; font: 500 12px/1.3 var(--font-mono); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; transition: border-color .3s, color .3s; }
+  .dstat:hover { border-color: var(--fg); color: var(--fg); }
+  .dstat[hidden] { display: none; }
+  .dd { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--muted); flex: none; }
+  .dstat.on .dd, .dstat.idle .dd, .dstat.dnd .dd, .dstat.up .dd { background: var(--fg); border-color: var(--fg); }
+  .dstat.idle .dd { background: linear-gradient(90deg, var(--fg) 50%, transparent 50%); }
+  .dstat.dnd .dd { background: transparent; box-shadow: inset 0 0 0 2px var(--bg), inset 0 0 0 5px var(--fg); }
+  .dstat.on .dd, .dstat.up .dd { animation: dping 2.4s ease-out infinite; }
+  @keyframes dping { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--fg) 45%, transparent); } 100% { box-shadow: 0 0 0 8px transparent; } }
+  .hero { display: flex; flex-direction: column; gap: 24px; }
+  h1 { margin: 0; font-weight: 600; font-size: clamp(3rem, 14vw, 6.5rem); line-height: .95; letter-spacing: -.045em; text-wrap: balance; }
+  .lead { margin: 0; max-width: 34ch; font-size: clamp(1.1rem, 3.4vw, 1.35rem); line-height: 1.45; color: var(--muted); font-weight: 300; }
+  .label { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+  .hint { margin: 0 0 8px; color: var(--muted); font-size: 14px; font-weight: 300; max-width: 52ch; }
+
+  /* link rows */
+  .list { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+  .row {
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px;
+    padding: 20px 12px; margin-inline: -12px;
+    border-bottom: 1px solid var(--line);
+    color: var(--fg); text-decoration: none;
+  }
+  .row .fill { position: absolute; inset: 0; background: var(--invert-bg); transform: scaleX(0); transform-origin: left; transition: transform .45s var(--ease); }
+  .row .txt, .row .arrow { position: relative; transition: color .3s, transform .45s var(--ease); }
+  .row .name { display: block; font-size: 1.2rem; font-weight: 500; letter-spacing: -.01em; }
+  .row .meta { display: block; font-size: 14px; font-weight: 300; color: var(--muted); margin-top: 2px; transition: color .3s, opacity .3s; }
+  .row .arrow { font-family: var(--font-mono); font-size: 18px; }
+  .row:hover .fill { transform: scaleX(1); }
+  .row:hover .name, .row:hover .arrow { color: var(--invert-fg); }
+  .row:hover .meta { color: var(--invert-fg); opacity: .65; }
+  .row:hover .txt { transform: translateX(6px); }
+  .row:hover .arrow { transform: translate(-4px, 0) rotate(0deg); }
+  .empty { margin: 0; color: var(--muted); font-weight: 300; }
+
+  /* admin editor */
+  .editor { border-top: 1px solid var(--line); margin-bottom: 18px; }
+  .erow { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; animation: fade .3s both; }
+  .efields { display: grid; gap: 8px; min-width: 0; }
+  .ectl { display: flex; flex-direction: column; gap: 6px; }
+  .ib { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--fg); font: 500 14px/1 var(--font-mono); cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .2s var(--ease); }
+  .ib:hover { background: var(--invert-bg); color: var(--invert-fg); border-color: var(--invert-bg); }
+  .ib:active { transform: scale(.92); }
+  .ib:disabled { opacity: .3; pointer-events: none; }
+
+  .inp {
+    width: 100%; min-width: 0;
+    font: 400 16px/1.4 var(--font-body); color: var(--fg);
+    background: transparent; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+    transition: border-color .2s;
+  }
+  .inp::placeholder { color: var(--muted); }
+  .inp:hover { border-color: var(--muted); }
+  .inp:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; border-color: var(--fg); }
+  .inp.bad { border-color: var(--fg); animation: shake .4s; }
+  textarea.inp { min-height: 180px; resize: vertical; line-height: 1.55; }
+
+  /* admin bar */
+  .abar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: var(--bg); border-top: 1px solid var(--line); padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px)); animation: rise .4s var(--ease) both; }
+  .abar-in { max-width: 720px; margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; }
+  .abar-s { font: 500 13px/1.3 var(--font-mono); color: var(--muted); }
+  .abar-b { display: flex; gap: 8px; }
+
+  /* members area */
+  .tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--line); margin-bottom: 26px; overflow-x: auto; }
+  .tab { position: relative; background: none; border: 0; padding: 10px 0; font: 500 14px var(--font-body); color: var(--muted); cursor: pointer; transition: color .2s; white-space: nowrap; }
+  .tab::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--fg); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+  .tab:hover, .tab.on { color: var(--fg); }
+  .tab:not(.on):hover::after { transform: scaleX(.35); }
+  .tab.on::after { transform: scaleX(1); }
+  .panel { animation: fade .35s both; display: flex; flex-direction: column; gap: 16px; }
+  .profile { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .bigav { width: 72px; height: 72px; border-radius: 18px; background: var(--fg); color: var(--bg); padding: 12px; display: grid; flex: none; transition: transform .5s var(--ease), border-radius .5s var(--ease); }
+  .bigav:hover { transform: rotate(-8deg) scale(1.05); border-radius: 26px; }
+  .pn { font-size: 1.4rem; font-weight: 500; letter-spacing: -.02em; overflow-wrap: anywhere; }
+  .ps { font: 400 13px var(--font-mono); color: var(--muted); }
+  .panel p { margin: 0; color: var(--muted); font-weight: 300; max-width: 52ch; }
+  .bmform { display: grid; grid-template-columns: 1fr 1.4fr auto; gap: 8px; }
+  .bm { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); animation: fade .3s both; }
+  .bm a { color: var(--fg); text-decoration: none; min-width: 0; display: block; }
+  .bm .bn { font-weight: 500; background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat; transition: background-size .4s var(--ease); }
+  .bm a:hover .bn { background-size: 100% 1px; }
+  .bm .bh { display: block; font: 400 12px var(--font-mono); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nmeta { font: 400 12px var(--font-mono); color: var(--muted); }
+  .lock { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; padding: 28px; border: 1px dashed var(--line); border-radius: 14px; transition: border-color .3s; }
+  .lock:hover { border-color: var(--fg); }
+  .lock p { margin: 0; color: var(--muted); font-weight: 300; font-size: 1.1rem; }
+  .ftools { display: flex; gap: 8px; margin-bottom: 14px; }
+  .ftools .inp { flex: 1; }
+  #flist { border-top: 1px solid var(--line); }
+  #flist .empty { padding-top: 16px; }
+  .btn.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .btn.on::before { background: var(--bg); }
+  .btn.on:hover { color: var(--fg); }
+  .fx { display: flex; gap: 6px; }
+  .ib.star.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .new { display: inline-block; vertical-align: middle; margin-left: 8px; font: 500 10px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--fg); border-radius: 999px; padding: 3px 7px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; padding: 16px 0; border-block: 1px solid var(--line); }
+  .sv { display: block; font-size: 1.25rem; font-weight: 500; letter-spacing: -.02em; color: var(--fg); }
+  .sl { display: block; font: 400 12px var(--font-mono); color: var(--muted); }
+  .nrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .fa { font: 18px var(--font-mono); color: var(--muted); transition: transform .4s var(--ease), color .3s; }
+  .bm:hover .fa { transform: translate(3px, -3px); color: var(--fg); }
+
+  /* texts the admin can edit in place */
+  .ed { cursor: text; border-radius: 4px; outline: 1px dashed transparent; outline-offset: 6px; transition: outline-color .2s, background-color .2s; }
+  .ed:hover { outline-color: var(--muted); }
+  .ed:focus { outline: 2px solid var(--fg); background: color-mix(in srgb, var(--fg) 5%, transparent); }
+  .ed:empty::before { content: "Text hinzufügen"; color: var(--muted); font-weight: 300; }
+
+  /* about */
+  .about { display: grid; gap: 28px; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; }
+  .fact { padding-top: 16px; border-top: 1px solid var(--line); transition: border-color .3s; }
+  .fact:hover { border-top-color: var(--fg); }
+  .fact h3 { margin: 0 0 6px; font-size: 1rem; font-weight: 500; }
+  .fact p { margin: 0; font-size: 15px; color: var(--muted); font-weight: 300; }
+
+  footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; }
+
+  [hidden] { display: none !important; }
+  /* cookie banner, demo chat, status */
+  .cb { position: fixed; left: 16px; bottom: 16px; z-index: 45; width: calc(100% - 32px); max-width: 460px; background: var(--bg); border: 1px solid var(--fg); border-radius: 16px; padding: 18px; display: grid; gap: 14px; animation: pop .4s var(--ease) both; }
+  .cb p { margin: 0; font-size: 14px; color: var(--muted); font-weight: 300; }
+  .cb-b { display: flex; gap: 8px; flex-wrap: wrap; }
+  body.has-bar .cb { bottom: 96px; }
+  .dm-cmds { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .dm { border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 14px; min-height: 96px; }
+  .dm .empty { font-size: 14px; }
+  .dm-m { display: grid; grid-template-columns: 36px 1fr; gap: 12px; animation: fade .3s both; }
+  .dm-a { width: 36px; height: 36px; border-radius: 50%; background: var(--line); color: var(--fg); display: grid; place-items: center; font: 600 14px var(--font-body); }
+  .dm-a.bot { background: var(--fg); color: var(--bg); border-radius: 10px; }
+  .dm-n { font-weight: 500; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .dm-t { font-size: 15px; color: var(--muted); font-weight: 300; overflow-wrap: anywhere; }
+  .dm-c { font-family: var(--font-mono); color: var(--fg); }
+  .dm-dots span { display: inline-block; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
+  .stform { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+  a.btn { text-decoration: none; display: inline-block; }
+  .fl { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  /* server card + impressum */
+  .scard { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; transition: border-color .3s; }
+  .scard:hover { border-color: var(--fg); }
+  .sic { width: 56px; height: 56px; border-radius: 14px; background: var(--fg); color: var(--bg); display: grid; place-items: center; font: 600 22px var(--font-body); overflow: hidden; flex: none; }
+  .sic img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .sname { font-size: 1.15rem; font-weight: 500; letter-spacing: -.01em; overflow-wrap: anywhere; }
+  .smeta { font: 400 13px var(--font-mono); color: var(--muted); }
+  .scard .btn { text-decoration: none; display: inline-block; }
+  .lnk { background: none; border: 0; padding: 0; font: inherit; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .lnk:hover { color: var(--fg); }
+  .imp h3 { margin: 18px 0 6px; font-size: 1rem; font-weight: 500; }
+  .imp h3:first-child { margin-top: 0; }
+  .imp p { margin: 0 0 4px; font-size: 15px; color: var(--muted); font-weight: 300; }
+  .imp a { color: var(--fg); }
+  @media (max-width: 520px) { .scard { grid-template-columns: auto 1fr; } .scard .btn { grid-column: 1 / -1; text-align: center; } }
+
+  /* bot request */
+  .rqf { margin-bottom: 14px; }
+  textarea.inp.rqt { min-height: 120px; }
+  .modal.big { max-height: calc(100dvh - 40px); overflow: auto; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .reqbox { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+
+  /* bot builder */
+  .bbf { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .bbg { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 14px 0; }
+  .bbc { text-align: left; font: inherit; color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 14px; padding: 14px; cursor: pointer; display: grid; gap: 8px; align-content: start; transition: background .3s, color .3s, border-color .3s, transform .2s var(--ease); }
+  .bbc:hover { border-color: var(--fg); }
+  .bbc:active { transform: scale(.98); }
+  .bbc:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+  .bbc[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .bbc b { font-weight: 500; display: flex; justify-content: space-between; gap: 8px; }
+  .bbc small { font-weight: 300; font-size: 13px; line-height: 1.4; opacity: .7; }
+  .bbk { display: flex; flex-wrap: wrap; gap: 4px; }
+  .bbk i { font: 400 11px var(--font-mono); font-style: normal; border: 1px solid currentColor; border-radius: 999px; padding: 2px 7px; opacity: .75; }
+  .bbs { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  @media (max-width: 520px) { .bbf { grid-template-columns: 1fr; } }
+
+  .bbr { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+  .bbx { display: grid; gap: 8px; margin: 14px 0; }
+  /* modal */
+  :root[data-acc=blue]{--ac:#2563eb}:root[data-acc=green]{--ac:#16a34a}:root[data-acc=purple]{--ac:#7c3aed}:root[data-acc=orange]{--ac:#ea580c}
+  :root[data-acc]{--invert-bg:var(--ac)!important;--invert-fg:#fff!important}
+  :root[data-acc] .btn.solid,:root[data-acc] .av{background:var(--ac);border-color:var(--ac);color:#fff}
+  :root[data-acc] .btn.solid:hover{color:var(--ac)}
+  :root[data-fs=s] .wrap{zoom:.92}:root[data-fs=l] .wrap{zoom:1.12}
+  :root[data-calm] *,:root[data-calm] *::before,:root[data-calm] *::after{animation:none!important;transition:none!important}
+  .sr{display:flex;flex-direction:column;gap:8px;padding:14px 0;border-top:1px solid var(--line)}
+  .sr>span{font:500 12px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .sg{display:flex;flex-wrap:wrap;gap:6px}.sg .btn{padding:8px 12px;font-size:12px}
+  .overlay { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 20px; background: color-mix(in srgb, var(--bg) 72%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); animation: fade .25s both; }
+  .modal { position: relative; width: min(420px, 100%); background: var(--bg); border: 1px solid var(--fg); border-radius: 18px; padding: 28px; animation: pop .4s var(--ease) both; }
+  .modal.shake { animation: shake .4s; }
+  .modal h2 { margin: 0 0 6px; font-size: 1.6rem; font-weight: 600; letter-spacing: -.03em; }
+  .modal .mp { margin: 0 0 22px; color: var(--muted); font-weight: 300; font-size: 15px; }
+  .modal label { display: block; font: 500 12px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  .modal .x { position: absolute; top: 14px; right: 14px; }
+  .pw { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .4s var(--ease), opacity .3s, margin .4s var(--ease); }
+  .pw.open { grid-template-rows: 1fr; opacity: 1; margin-top: 16px; }
+  .pwi { overflow: hidden; min-height: 0; padding: 2px; margin: -2px; }
+  .err { min-height: 1.4em; margin: 12px 0 14px; font-size: 14px; color: var(--fg); font-weight: 500; }
+
+  .toast { position: fixed; left: 50%; bottom: 24px; z-index: 60; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--fg); color: var(--bg); padding: 12px 18px; border-radius: 999px; font: 500 14px var(--font-body); max-width: calc(100% - 40px); text-align: center; transition: opacity .3s, transform .4s var(--ease); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  body.has-bar .toast { bottom: 96px; }
+
+  @media (max-width: 520px) {
+    .bmform { grid-template-columns: 1fr; }
+    .wrap { gap: 56px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+  .navtabs{display:flex;gap:6px;position:sticky;top:0;z-index:20;background:var(--bg);padding:10px 0;margin-block:-36px;overflow-x:auto;scrollbar-width:none}
+  .nv{font:500 13px/1 var(--font-mono);padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap;transition:color .3s,border-color .3s,background .3s}
+  .nv:hover{border-color:var(--fg);color:var(--fg)}
+  .nv[aria-selected=true],.nv[aria-selected=true]:hover{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+  .nv:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+  .wrap[data-pg=start] .sec[data-pg]:not([data-pg=start]),.wrap[data-pg=bot] .sec[data-pg]:not([data-pg=bot]),.wrap[data-pg=member] .sec[data-pg]:not([data-pg=member]){display:none}
+  #member .tabs{overflow-x:auto;scrollbar-width:none}#member .tab{white-space:nowrap}
+</style>
+
+<div id="mount"></div>
+
+<template id="shell">
+  <div class="wrap">
+    <header class="top sec" id="top"></header>
+
+    <section class="hero sec">
+      <h1 data-t="h1" data-en="Hi, I'm Elias.">Hallo.</h1>
+      <p class="lead" data-t="lead" data-en="I build programs and run communities. Here you can find me and everything I make.">Ich programmiere und betreibe Communities. Hier findest du mich und alles, was ich baue.</p>
+      <div class="pills"><div class="dstat" id="dstat" hidden><span class="dd"></span><span class="dt"></span></div></div>
+    </section>
+
+    <nav class="navtabs sec" role="tablist"><button class="nv" role="tab" data-pg="start" data-en="Start">Start</button><button class="nv" role="tab" data-pg="bot" data-en="Bot builder">Bot-Builder</button><button class="nv" role="tab" data-pg="member" data-en="Members">Mitglieder</button></nav>
+
+    <section data-pg="start" class="sec" id="links"></section>
+
+    <section data-pg="start" class="sec" id="srv">
+      <p class="label" data-t="srvlabel" data-en="My Discord server">Mein Discord-Server</p>
+      <div class="scard">
+        <div class="sic" id="sic" aria-hidden="true">U</div>
+        <div><div class="sname" id="sname">Untot Dev</div><div class="smeta" id="smeta">Der deutsche Discord-Server</div></div>
+        <a class="btn solid" href="https://discord.gg/ySwntZUFBh" target="_blank" rel="noopener" data-en="Join">Beitreten</a>
+      </div>
+    </section>
+
+    <section data-pg="start" class="about sec">
+      <p class="label" style="margin:0" data-t="aboutlabel" data-en="What I do">Was ich mache</p>
+      <div class="facts">
+        <div class="fact"><h3 data-t="f1h">Code</h3><p data-t="f1p" data-en="Python tools and bots that run without me sitting next to them.">Python-Tools und Bots, die laufen, ohne dass ich danebensitzen muss.</p></div>
+        <div class="fact"><h3 data-t="f2h">Community</h3><p data-t="f2p" data-en="The German Discord server Cryptics Community.">Der deutsche Discord-Server Cryptics Community.</p></div>
+      </div>
+    </section>
+
+    <section data-pg="bot" class="sec" id="demo">
+      <p class="label" data-en="Bot preview">Bot-Vorschau</p>
+      <p class="hint" data-en="Try a few commands. This is only a demo, not a real bot.">Probier ein paar Befehle aus. Das ist nur eine Demo, kein echter Bot.</p>
+      <div id="dm"></div>
+    </section>
+
+    <section data-pg="bot" class="sec" id="builder"></section>
+
+    <section data-pg="bot" class="sec" id="botreq">
+      <p class="label" data-t="reqlabel" data-en="Request a Discord bot">Discord-Bot anfragen</p>
+      <div class="reqbox">
+        <p class="hint" data-t="reqtext" data-en="Need your own Discord bot? Send me your idea and I will reply by email or on Discord.">Du brauchst einen eigenen Discord-Bot? Schick mir deine Idee, ich melde mich per E-Mail oder Discord.</p>
+        <button class="btn solid" data-act="botreq" type="button" data-en="Request bot">Bot anfragen</button>
+      </div>
+    </section>
+
+    <section data-pg="bot" class="sec" id="reqstat" hidden>
+      <p class="label" data-en="Request status">Anfrage-Status</p>
+      <p class="hint" data-en="Only you can see your requests while you are signed in.">Deine Anfragen siehst nur du, solange du angemeldet bist.</p>
+      <div id="stbox"></div>
+    </section>
+
+    <section data-pg="start" class="sec" id="donate" hidden>
+      <p class="label" data-en="Support me">Unterstützen</p>
+      <div class="reqbox">
+        <p class="hint" data-t="donatetext" data-en="If you like my projects, you can support me with a voluntary donation.">Gefallen dir meine Projekte? Du kannst mich freiwillig mit einer Spende unterstützen.</p>
+        <a class="btn solid" id="donbtn" href="#" target="_blank" rel="noopener" data-en="Donate" hidden>Spenden</a>
+        <p class="hint" id="donadm" hidden>Admin: Spenden-Link, zum Beispiel https://ko-fi.com/deinname: <span data-t="donateurl" data-d=""></span></p>
+      </div>
+    </section>
+
+    <section data-pg="member" class="sec" id="member"></section>
+
+    <section class="sec" id="impressum" hidden>
+      <p class="label" data-en="Legal notice">Impressum</p>
+      <div class="imp">
+        <h3 data-t="imph" data-en="Information pursuant to § 5 DDG">Angaben gemäß § 5 DDG</h3>
+        <p data-t="impn">[Vor- und Nachname]</p>
+        <p data-t="impa">[Straße und Hausnummer, PLZ Ort]</p>
+        <h3 data-en="Contact">Kontakt</h3>
+        <p><span data-en="Email:">E-Mail:</span> <a href="mailto:untot.dev@gmail.com">untot.dev@gmail.com</a></p>
+      </div>
+    </section>
+
+    <footer class="sec"><span data-t="foot">© 2026</span><span class="fl"><button class="lnk" data-act="impr" type="button" data-en="Legal notice">Impressum</button><button class="lnk" data-act="cookies" type="button" data-en="Cookie settings">Cookie-Einstellungen</button></span></footer>
+  </div>
+</template>
+
+<script type="application/json" id="state">{"links":[{"label":"Discord","meta":"Komm auf meinen Server","url":"https://discord.gg/ySwntZUFBh"},{"label":"GitHub","meta":"Kommt bald...","url":"https://coming-soon-page-e.netlify.app/"}],"texts":{"h1":"Hallo ich bin Elias.","foot":"© 2026 Elias"},"files":[{"label":"Discord Bot template","meta":"Discord bot ist gerade in Entwicklung","url":"https://coming-soon-page-e.netlify.app/"}]}</script>
+
+<script id="app">
+(function () {
+  'use strict';
+  var NAME_RE = /^[a-z0-9_.-]{3,20}$/;
+  // Bot-Anfragen gehen per FormSubmit.co an diese Adresse (beim ersten Absenden einmal die Bestätigungsmail annehmen)
+  var REQ_EMAIL = 'untot.dev@gmail.com';
+  // Adresse deines Servers (siehe server.js / ANLEITUNG.md). Alle Anfragen und das Veröffentlichen laufen darüber in GitHub.
+  var API = 'https://elias-api.duckdns.org';
+  var DATA_URL = 'data.json';
+
+  /* ---------- storage that never throws ---------- */
+  var mem = {};
+  function store(kind) { try { return window[kind]; } catch (e) { return null; } }
+  function get(kind, k) {
+    try { var s = store(kind); if (s) { var v = s.getItem(k); if (v !== null) return v; } } catch (e) {}
+    return mem[kind + k] === undefined ? null : mem[kind + k];
+  }
+  function put(kind, k, v) { mem[kind + k] = v; try { var s = store(kind); if (s) s.setItem(k, v); } catch (e) {} }
+  function drop(kind, k) { delete mem[kind + k]; try { var s = store(kind); if (s) s.removeItem(k); } catch (e) {} }
+  var LS = 'localStorage', SS = 'sessionStorage';
+
+  /* ---------- helpers ---------- */
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function host(u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return u; } }
+  function normUrl(raw) {
+    var u = String(raw || '').trim();
+    if (!u) return null;
+    if (!/^[a-z][a-z0-9+.-]*:/i.test(u)) u = 'https://' + u;
+    try { var x = new URL(u); if (x.protocol !== 'https:' && x.protocol !== 'http:') return null; if (x.hostname.indexOf('.') < 0) return null; return x.href; } catch (e) { return null; }
+  }
+  function icon(name) {
+    var h = 2166136261 >>> 0, i;
+    for (i = 0; i < name.length; i++) { h ^= name.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    var x = h || 1, cells = '', r, c;
+    function rect(cx, cy) { return '<rect x="' + cx + '" y="' + cy + '" width="1" height="1"/>'; }
+    for (r = 0; r < 5; r++) for (c = 0; c < 3; c++) {
+      x ^= x << 13; x >>>= 0; x ^= x >>> 17; x ^= x << 5; x >>>= 0;
+      if (x & 1) { cells += rect(c, r); if (c < 2) cells += rect(4 - c, r); }
+    }
+    if (!cells) cells = rect(2, 2);
+    return '<svg viewBox="0 0 5 5" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">' + cells + '</svg>';
+  }
+  var HALF = '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 1.5a5.5 5.5 0 0 1 0 11z" fill="currentColor"/></svg>';
+
+  /* ---------- state ---------- */
+  var root = document.documentElement;
+  var shell = $('shell');
+  var STATE = JSON.parse($('state').textContent);
+  var links = STATE.links;
+  var texts = STATE.texts || {};
+  var files = STATE.files || [];
+  var reqs = STATE.reqs || [];
+  /* Authentifizierung kommt ausschließlich vom Discord-OAuth-Backend. */
+  var user = null;
+  var admin = false;
+  var draft = admin ? clone(links) : null;
+  var dtexts = admin ? clone(texts) : null;
+  var dfiles = admin ? clone(files) : null;
+  var dreqs = admin ? clone(reqs) : null;
+  var tab = 'profil';
+  var busy = false;
+  var fq = '', favOnly = false, prevVisit = null, visits = 0, wipeT = 0;
+
+  $('mount').appendChild(shell.content.cloneNode(true));
+  $('mount').classList.add('intro');
+  setTimeout(function () { $('mount').classList.remove('intro'); }, 1200);
+
+  /* ---------- theme ---------- */
+  function theme() { var t = root.getAttribute('data-theme'); if (t) return t; return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+  var savedTheme = get(LS, 'theme');
+  if (savedTheme === 'dark' || savedTheme === 'light') root.setAttribute('data-theme', savedTheme);
+
+  /* ---------- toast ---------- */
+  var toastEl = document.createElement('div');
+  toastEl.className = 'toast'; toastEl.setAttribute('role', 'status');
+  document.body.appendChild(toastEl);
+  var toastT = 0;
+  function toast(msg) {
+    toastEl.textContent = msg; toastEl.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove('show'); }, 3200);
+  }
+
+  /* ---------- editable texts: every [data-t] element can be changed in admin mode ---------- */
+  function has(o, k) { return Object.prototype.hasOwnProperty.call(o, k); }
+  function T(k, def) { var src = admin && dtexts ? dtexts : texts; return has(src, k) ? src[k] : def; }
+  function applyTexts() {
+    var src = admin && dtexts ? dtexts : texts;
+    [].forEach.call(document.querySelectorAll('[data-t]'), function (el) {
+      if (el.dataset.d === undefined) el.dataset.d = el.textContent;
+      var k = el.dataset.t, v = has(src, k) ? src[k] : el.dataset.d;
+      if (el.textContent !== v) el.textContent = v;
+      if (admin) {
+        el.contentEditable = 'plaintext-only';
+        if (el.contentEditable !== 'plaintext-only') el.contentEditable = 'true';
+        el.spellcheck = false; el.classList.add('ed');
+      } else {
+        el.removeAttribute('contenteditable'); el.classList.remove('ed');
+      }
+    });
+  }
+  function norm(o) { var r = {}; Object.keys(o || {}).sort().forEach(function (k) { r[k] = o[k]; }); return JSON.stringify(r); }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.dataset && e.target.dataset.t) { e.preventDefault(); e.target.blur(); }
+  });
+
+  /* ---------- header ---------- */
+  function renderTop() {
+    var h = '<div class="actions">';
+    if (user) {
+      h += '<span class="chip"><span class="av">' + icon(user.name) + '</span><span class="cn">' + esc(user.name) + '</span>' + (admin ? '<span class="tag">Admin</span>' : '') + '</span>';
+      h += '<button class="btn ghost" data-act="logout" type="button">' + L('Abmelden', 'Log out') + '</button>';
+    } else {
+      h += '<button class="btn solid" data-act="discord" type="button">' + L('Mit Discord anmelden', 'Sign in with Discord') + '</button>';
+    }
+    if (!admin) h += '<button class="btn ghost" data-act="lang" type="button" aria-label="Language">' + (isEn() ? 'DE' : 'EN') + '</button>';
+    h += '<button class="btn ghost icon" data-act="settings" type="button" aria-label="Einstellungen"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg></button>';
+    h += '<button class="btn ghost icon" data-act="theme" type="button" aria-label="Hell oder dunkel wechseln">' + HALF + '</button></div>';
+    $('top').innerHTML = h;
+  }
+
+  /* ---------- links ---------- */
+  function rowHTML(l) {
+    return '<a class="row" href="' + esc(l.url) + '" target="_blank" rel="noopener"><span class="fill"></span><span class="txt"><span class="name">' + esc(l.label) + '</span>' + (l.meta ? '<span class="meta">' + esc(l.meta) + '</span>' : '') + '</span><span class="arrow">↗</span></a>';
+  }
+  function editRow(l, i, n, list) {
+    list = list || 'links';
+    var f = list === 'files', d = ' data-l="' + list + '" data-i="' + i + '"';
+    return '<div class="erow"' + d + '><div class="efields">' +
+      '<input class="inp" data-f="label" value="' + esc(l.label) + '" placeholder="' + (f ? 'Dateiname, zum Beispiel main.py' : 'Name, zum Beispiel Discord') + '" aria-label="Name">' +
+      '<input class="inp" data-f="url" value="' + esc(l.url) + '" placeholder="' + (f ? 'https://github.com/…/datei' : 'https://…') + '" inputmode="url" autocapitalize="none" spellcheck="false" aria-label="Adresse">' +
+      '<input class="inp" data-f="meta" value="' + esc(l.meta) + '" placeholder="Kurze Beschreibung (optional)" aria-label="Beschreibung">' +
+      '</div><div class="ectl">' +
+      '<button class="ib" type="button" data-act="up"' + d + ' aria-label="Nach oben"' + (i === 0 ? ' disabled' : '') + '>↑</button>' +
+      '<button class="ib" type="button" data-act="down"' + d + ' aria-label="Nach unten"' + (i === n - 1 ? ' disabled' : '') + '>↓</button>' +
+      '<button class="ib" type="button" data-act="del"' + d + ' aria-label="Löschen">✕</button>' +
+      '</div></div>';
+  }
+  function renderLinks() {
+    var h = '<p class="label" data-t="socials" data-d="Socials">' + esc(T('socials', 'Socials')) + '</p>';
+    if (!admin) {
+      h += links.length ? '<div class="list">' + links.map(rowHTML).join('') + '</div>' : '<p class="empty">Hier kommen bald Links hin.</p>';
+    } else {
+      h += '<p class="hint">Admin-Modus. Tippe auf einen beliebigen Text der Seite, um ihn zu ändern. Die Links bearbeitest du hier. Mit Veröffentlichen sehen alle Besucher die neue Version.</p>' +
+        '<div class="editor">' + draft.map(function (l, i) { return editRow(l, i, draft.length); }).join('') + '</div>' +
+        '<button class="btn ghost" data-act="add" type="button">+ Link hinzufügen</button>';
+    }
+    $('links').innerHTML = h;
+    updateBar();
+    applyTexts();
+  }
+
+  /* ---------- admin bar ---------- */
+  var bar = document.createElement('div');
+  bar.className = 'abar'; bar.hidden = true;
+  document.body.appendChild(bar);
+  function pick(l) { return { label: String(l.label).trim(), meta: String(l.meta || '').trim(), url: String(l.url).trim() }; }
+  function dirty() { return JSON.stringify(draft.map(pick)) !== JSON.stringify(links.map(pick)) || JSON.stringify(dfiles.map(pick)) !== JSON.stringify(files.map(pick)) || norm(dtexts) !== norm(texts) ; }
+  function updateBar() {
+    if (!admin) { bar.hidden = true; document.body.classList.remove('has-bar'); return; }
+    var d = dirty();
+    bar.hidden = false; document.body.classList.add('has-bar');
+    bar.innerHTML = '<div class="abar-in"><span class="abar-s">' + (busy ? 'Veröffentliche …' : d ? 'Nicht veröffentlichte Änderungen' : 'Alles veröffentlicht') + '</span><div class="abar-b">' +
+      '<button class="btn ghost" type="button" data-act="reset"' + (d && !busy ? '' : ' disabled') + '>Zurücksetzen</button>' +
+      '<button class="btn solid" type="button" data-act="publish"' + (d && !busy ? '' : ' disabled') + '>Veröffentlichen</button></div></div>';
+  }
+
+  /* ---------- publish: schreibt data.json in GitHub (über den Worker) ---------- */
+  async function publishLinks() {
+    var clean = [], bad = false, rows = $('links').querySelectorAll('.erow');
+    draft.forEach(function (l, i) {
+      var label = String(l.label).trim(), url = normUrl(l.url);
+      var inputs = rows[i] ? rows[i].querySelectorAll('.inp') : [];
+      if (!label) { bad = true; if (inputs[0]) inputs[0].classList.add('bad'); }
+      if (!url) { bad = true; if (inputs[1]) inputs[1].classList.add('bad'); }
+      if (label && url) clean.push({ label: label, meta: String(l.meta || '').trim(), url: url });
+    });
+    var cleanFiles = [];
+    dfiles.forEach(function (f) {
+      var label = String(f.label).trim(), url = normUrl(f.url);
+      if (label && url) { var o = { label: label, meta: String(f.meta || '').trim(), url: url }; if (f.added) o.added = f.added; cleanFiles.push(o); } else bad = true;
+    });
+    if (bad) { toast('Jeder Link und jede Datei braucht einen Namen und eine gültige Adresse.'); return; }
+    busy = true; updateBar();
+    try {
+      var ct = {};
+      Object.keys(dtexts).forEach(function (k) { ct[k] = String(dtexts[k]).slice(0, 600); });
+      var r = await fetch(API + '/publish', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ links: clean, texts: ct, files: cleanFiles }) });
+      if (r.status === 401 || r.status === 403) throw new Error('Keine Admin-Berechtigung.');
+      if (!r.ok) throw new Error('Fehler ' + r.status);
+      links = clean; files = cleanFiles; texts = ct;
+      draft = clone(links); dfiles = clone(files); dtexts = clone(texts);
+      busy = false; renderAll();
+      toast('Gespeichert. GitHub Pages braucht einen Moment, bis alle die neue Version sehen.');
+    } catch (err) {
+      busy = false; updateBar();
+      toast(err && err.message ? err.message : 'Veröffentlichen hat nicht geklappt. Versuch es gleich nochmal.');
+    }
+  }
+
+  /* ---------- members area (stays on this device) ---------- */
+  function bmKey() { return 'eb_bm_' + user.name; }
+  function noteKey() { return 'eb_notes_' + user.name; }
+  function readBm() { try { var a = JSON.parse(get(LS, bmKey()) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+  function fmtDate(iso) { try { return new Date(iso).toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return ''; } }
+  /* visits, favourites, copy, wipe (all kept in this browser) */
+  function touchVisit() {
+    if (!user) return;
+    var k = 'eb_last_' + user.name, nk = 'eb_n_' + user.name;
+    prevVisit = get(LS, k);
+    visits = (parseInt(get(LS, nk) || '0', 10) || 0) + 1;
+    put(LS, nk, String(visits)); put(LS, k, new Date().toISOString());
+  }
+  function favKey() { return 'eb_fav_' + user.name; }
+  function readFav() { try { var a = JSON.parse(get(LS, favKey()) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+  function isNew(f) { return !!(f.added && prevVisit && f.added > prevVisit); }
+  function copyText(t, ok) {
+    var p, fb = 'Kopieren geht hier nicht. Markiere den Text und kopiere ihn von Hand.';
+    try { p = navigator.clipboard.writeText(t); } catch (e) { p = null; }
+    if (p && p.then) p.then(function () { toast(ok); }, function () { toast(fb); }); else toast(fb);
+  }
+  function wipeUser() { try { ['eb_todo_', 'eb_bots_'].forEach(function (p) { drop(LS, p + user.name); }); } catch (e) {}
+    var n = user.name;
+    ['eb_bm_', 'eb_notes_', 'eb_fav_', 'eb_n_', 'eb_last_'].forEach(function (p) { drop(LS, p + n); });
+    user = null; admin = false; draft = null; dtexts = null; dfiles = null; busy = false;
+    drop(LS, 'eb_user'); drop(SS, 'eb_admin'); renderAll(); toast('Konto und Daten gelöscht.');
+  }
+
+  /* ---------- files section: its own block, locked until sign-in ---------- */
+  function fileRow(f, i, favs) {
+    var on = favs.indexOf(f.url) > -1;
+    return '<div class="bm"><a href="' + esc(f.url) + '" target="_blank" rel="noopener"><span class="bn">' + esc(f.label) + '</span>' + (isNew(f) ? '<span class="new">Neu</span>' : '') + '<span class="bh">' + esc(f.meta || ghInfo(f.url)) + '</span></a><div class="fx">' +
+      '<button class="ib" type="button" data-act="copy" data-i="' + i + '" aria-label="Link kopieren" title="Link kopieren">⧉</button>' +
+      '<button class="ib star' + (on ? ' on' : '') + '" type="button" data-act="star" data-i="' + i + '" aria-label="' + (on ? 'Favorit entfernen' : 'Als Favorit merken') + '" aria-pressed="' + on + '">' + (on ? '★' : '☆') + '</button></div></div>';
+  }
+  function renderFileList() {
+    var box = $('flist'); if (!box) return;
+    var favs = readFav(), q = fq.trim().toLowerCase(), out = [];
+    files.forEach(function (f, i) {
+      if (favOnly && favs.indexOf(f.url) < 0) return;
+      if (q && (f.label + ' ' + (f.meta || '') + ' ' + f.url).toLowerCase().indexOf(q) < 0) return;
+      out.push(fileRow(f, i, favs));
+    });
+    box.innerHTML = out.length ? out.join('') : '<p class="empty">' + (files.length ? 'Keine Treffer.' : 'Noch keine Dateien freigegeben.') + '</p>';
+  }
+  function renderFiles() {
+    if (!$('files')) return;
+    var h = '<p class="label" data-t="fileslabel" data-d="Dateien">' + esc(T('fileslabel', 'Dateien')) + '</p>';
+    if (!user) {
+      h += '<div class="lock"><p>Melde dich an, um alle Dateien zu sehen.</p><button class="btn solid" data-act="discord" type="button">Mit Discord anmelden</button></div>';
+    } else if (admin) {
+      h += '<p class="hint">Füge Links zu Dateien aus GitHub ein. Angemeldete Besucher sehen sie hier. Bei einem privaten Repo kommen nur Leute mit GitHub-Zugriff an die Datei.</p>' +
+        '<div class="editor">' + dfiles.map(function (f, i) { return editRow(f, i, dfiles.length, 'files'); }).join('') + '</div>' +
+        '<button class="btn ghost" data-act="add" data-l="files" type="button">+ Datei hinzufügen</button>';
+    } else {
+      h += '<div class="ftools"><input class="inp" id="fq" type="search" placeholder="Dateien suchen  ( / )" autocomplete="off" aria-label="Dateien suchen" value="' + esc(fq) + '"><button class="btn ghost' + (favOnly ? ' on' : '') + '" type="button" data-act="favfilter" aria-pressed="' + favOnly + '">★ Favoriten</button></div><div id="flist"></div>';
+    }
+    $('files').innerHTML = h;
+    if (user && !admin) renderFileList();
+    applyTexts();
+  }
+
+  function ghInfo(u) {
+    try {
+      var x = new URL(u), s = x.pathname.split('/').filter(Boolean);
+      if (x.hostname === 'github.com' && s.length >= 2) return s[0] + '/' + s[1] + (s.length > 4 ? ' · ' + s.slice(4).join('/') : '');
+      if (x.hostname === 'raw.githubusercontent.com' && s.length >= 2) return s[0] + '/' + s[1] + (s.length > 3 ? ' · ' + s.slice(3).join('/') : '');
+      return x.hostname.replace(/^www\./, '');
+    } catch (e) { return u; }
+  }
+  function renderMember() {
+    var el = $('member');
+    if (!user) {
+      el.hidden = false;
+      el.innerHTML = '<p class="label" data-en="Your area">Dein Bereich</p><div class="reqbox"><p class="hint" data-en="Sign in with Discord to get a profile, bookmarks, notes, a to-do list and saved bot configs.">Melde dich mit Discord an und nutze Profil, Lesezeichen, Notizen, Aufgaben und gespeicherte Bot-Konfigurationen.</p><button class="btn solid" data-act="discord" type="button" data-en="Sign in with Discord">Mit Discord anmelden</button></div>';
+      syncNv(); return;
+    }
+    el.hidden = false;
+    var tabs = [['profil', 'Profil'], ['marks', 'Lesezeichen'], ['notes', 'Notizen'], ['todo', 'Aufgaben'], ['bots', 'Meine Bots']];
+    var h = '<p class="label">Dein Bereich</p><div class="tabs" role="tablist">' + tabs.map(function (t) {
+      return '<button class="tab' + (tab === t[0] ? ' on' : '') + '" type="button" role="tab" aria-selected="' + (tab === t[0]) + '" data-act="tab" data-t="' + t[0] + '">' + t[1] + '</button>';
+    }).join('') + '</div><div class="panel">';
+    if (tab === 'profil') {
+      h += '<div class="profile"><div class="bigav">' + icon(user.name) + '</div><div><div class="pn">' + esc(user.name) + '</div><div class="ps">Mitglied seit ' + esc(fmtDate(user.since)) + '</div></div></div>' +
+        '<div class="stats"><div><span class="sv">' + visits + '</span><span class="sl">Besuche</span></div><div><span class="sv">' + (prevVisit ? esc(fmtDate(prevVisit)) : 'erstmals') + '</span><span class="sl">Zuletzt hier</span></div><div><span class="sv">' + readFav().length + '</span><span class="sl">Favoriten</span></div></div>' +
+        '<p>Dein Bild entsteht aus deinem Usernamen. Lesezeichen, Notizen und Favoriten gehören nur dir und bleiben in diesem Browser gespeichert.</p>' +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost" data-act="exportall" type="button">Daten exportieren</button><button class="btn ghost" data-act="wipe" type="button">Konto und Daten löschen</button></div>';
+    } else if (tab === 'marks') {
+      var bm = readBm();
+      h += '<form class="bmform" data-form="bm" novalidate><input class="inp" id="bm-name" placeholder="Name" maxlength="40" aria-label="Name"><input class="inp" id="bm-url" placeholder="https://…" inputmode="url" autocapitalize="none" spellcheck="false" aria-label="Adresse"><button class="btn solid" type="submit">Speichern</button></form>';
+      h += bm.length ? '<div>' + bm.map(function (b, i) {
+        return '<div class="bm"><a href="' + esc(b.url) + '" target="_blank" rel="noopener"><span class="bn">' + esc(b.name) + '</span><span class="bh">' + esc(host(b.url)) + '</span></a><button class="ib" type="button" data-act="bm-del" data-i="' + i + '" aria-label="Lesezeichen löschen">✕</button></div>';
+      }).join('') + '</div>' : '<p>Noch keine Lesezeichen. Speichere hier Seiten, die du dir merken willst.</p>';
+    } else if (tab === 'todo') {
+      var td = readTd();
+      h += '<div class="bmform"><input class="inp" id="td-in" maxlength="120" placeholder="Neue Aufgabe" aria-label="Aufgabe"><button class="btn solid" type="button" data-act="td-add">Hinzufügen</button></div>' +
+        (td.length ? '<div>' + td.map(function (x, n) { return '<div class="bm"><label style="display:flex;gap:10px;align-items:center;flex:1;cursor:pointer' + (x.d ? ';text-decoration:line-through;color:var(--muted)' : '') + '"><input type="checkbox" data-act="td-tg" data-i="' + n + '"' + (x.d ? ' checked' : '') + '>' + esc(x.t) + '</label><button class="ib" type="button" data-act="td-del" data-i="' + n + '" aria-label="Löschen">✕</button></div>'; }).join('') + '</div><p>' + td.filter(function (x) { return x.d; }).length + ' von ' + td.length + ' erledigt.</p>' : '<p>Noch keine Aufgaben. Schreib auf, was du vorhast.</p>');
+    } else if (tab === 'bots') {
+      var mb = readMb();
+      h += '<p>Speichere die aktuelle Auswahl aus dem Bot-Builder unter einem Namen und lade sie später wieder.</p><div class="bmform"><input class="inp" id="mb-n" maxlength="32" placeholder="Name der Konfiguration" aria-label="Name"><button class="btn solid" type="button" data-act="mb-save">Aktuellen Bot speichern</button></div>' +
+        (mb.length ? '<div>' + mb.map(function (x, n) { return '<div class="bm"><span class="bn" style="flex:1">' + esc(x.n) + '<span class="bh" style="display:block">' + Object.keys(x.cfgd.sel || {}).length + ' Module</span></span><button class="btn ghost" type="button" data-act="mb-load" data-i="' + n + '">Laden</button><button class="ib" type="button" data-act="mb-del" data-i="' + n + '" aria-label="Löschen">✕</button></div>'; }).join('') + '</div>' : '<p>Noch keine gespeicherten Bots.</p>');
+    } else {
+      var note = get(LS, noteKey()) || '';
+      h += '<textarea class="inp" id="notes" maxlength="5000" placeholder="Schreib hier irgendwas auf …" aria-label="Notizen">' + esc(note) + '</textarea><div class="nrow"><span class="nmeta" id="ncount">' + note.length + ' Zeichen · wird automatisch gespeichert</span><button class="btn ghost" type="button" data-act="copynotes">Notizen kopieren</button></div>';
+    }
+    h += '</div>';
+    el.innerHTML = h; syncNv();
+  }
+  function relist(l) { if (l === 'files') renderFiles(); else renderLinks(); updateBar(); }
+  function addBm() {
+    var u = normUrl($('bm-url').value), n = $('bm-name').value.trim();
+    if (!u) { $('bm-url').classList.add('bad'); toast('Gib eine gültige Adresse ein.'); return; }
+    var bm = readBm(); bm.push({ name: n || host(u), url: u });
+    put(LS, bmKey(), JSON.stringify(bm)); renderMember();
+  }
+
+  /* ---------- Discord-Bot anfragen ---------- */
+  var rq = document.createElement('div');
+  rq.className = 'overlay'; rq.hidden = true;
+  rq.innerHTML = '<div class="modal big" role="dialog" aria-modal="true" aria-labelledby="rqt"><button class="ib x" type="button" data-act="reqclose" aria-label="Schließen">✕</button>' +
+    '<h2 id="rqt" data-en="Request a Discord bot">Discord-Bot anfragen</h2><p class="mp" data-en="Briefly describe what your bot should do. I will reply by email or on Discord.">Beschreib kurz, was dein Bot können soll. Ich melde mich per E-Mail oder Discord.</p>' +
+    '<form id="rqf" novalidate>' +
+    '<div class="rqf"><label for="rq-n" data-en="Your name">Dein Name</label><input class="inp" id="rq-n" maxlength="80" autocomplete="name"></div>' +
+    '<div class="rqf"><label for="rq-e" data-en="Email">E-Mail</label><input class="inp" id="rq-e" type="email" maxlength="120" autocomplete="email" autocapitalize="none"></div>' +
+    '<div class="rqf"><label for="rq-d" data-en="Discord name (optional)">Discord-Name (optional)</label><input class="inp" id="rq-d" maxlength="60" autocapitalize="none" spellcheck="false" placeholder="@name"></div>' +
+    '<div class="rqf"><label for="rq-b" data-en="Preferred bot name (optional)">Gewünschter Bot-Name (optional)</label><input class="inp" id="rq-b" maxlength="60"></div>' +
+    '<div class="rqf"><label for="rq-t" data-en="Features">Funktionen</label><textarea class="inp rqt" id="rq-t" maxlength="2000" placeholder="Zum Beispiel Moderation, Musik, Tickets, Willkommensnachricht …" data-en-ph="For example moderation, music, tickets, welcome message …"></textarea></div>' +
+    '<div class="hp" aria-hidden="true"><input id="rq-h" tabindex="-1" autocomplete="off"></div>' +
+    '<p class="err" id="rq-m" role="status"></p><button class="btn solid wide" id="rq-s" type="submit" data-en="Send request">Anfrage senden</button></form></div>';
+  document.body.appendChild(rq);
+  var rqFocus = null;
+  function openReq() {
+    rqFocus = document.activeElement;
+    $('rq-m').textContent = '';
+    if (user && !$('rq-n').value) $('rq-n').value = user.name;
+    rq.hidden = false;
+    setTimeout(function () { $('rq-n').focus(); }, 60);
+  }
+  function closeReq() { rq.hidden = true; if (rqFocus && rqFocus.focus) try { rqFocus.focus(); } catch (e) {} }
+  rq.addEventListener('mousedown', function (e) { if (e.target === rq) closeReq(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !rq.hidden) closeReq(); });
+  $('rqf').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if ($('rq-h').value) return;
+    function v(id) { return $(id).value.trim(); }
+    var nm = v('rq-n'), em = v('rq-e'), ds = v('rq-d'), bn = v('rq-b'), tx = v('rq-t'), m = $('rq-m'), s = $('rq-s');
+    if (!nm || !tx) { m.textContent = L('Bitte Name und Funktionen ausfüllen.', 'Please fill in your name and the features.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { m.textContent = L('Bitte eine gültige E-Mail angeben.', 'Please enter a valid email.'); return; }
+    s.disabled = true; m.textContent = L('Wird gesendet …', 'Sending …');
+    fetch(API + '/request', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user: user ? user.name : '', discordId: user ? user.dc : '', name: nm, email: em, discord: ds, botName: bn, features: tx, hp: $('rq-h').value })
+    }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.j.code) throw new Error((res.j && res.j.error) || '');
+        var code = res.j.code;
+        saveReq(code);
+        reqStat[code] = 'received';
+        ['rq-e', 'rq-d', 'rq-b', 'rq-t'].forEach(function (id) { $(id).value = ''; });
+        m.textContent = L('Danke! Dein Anfrage-Code: ', 'Thanks! Your request code: ') + code;
+        renderReqStatus(); confetti();
+        setTimeout(closeReq, 4500);
+      })
+      .catch(function (err) {
+        var why = err && err.message ? ' (' + err.message + ')' : '';
+        var code = genCode();
+        var mail = 'mailto:' + REQ_EMAIL + '?subject=' + encodeURIComponent('Discord-Bot-Anfrage ' + code + ' von ' + nm) +
+          '&body=' + encodeURIComponent('Anfrage-Code: ' + code + '\nName: ' + nm + '\nE-Mail: ' + em + '\nDiscord: ' + (ds || '-') + '\nBot-Name: ' + (bn || '-') + '\n\nFunktionen:\n' + tx);
+        m.innerHTML = esc(L('Senden fehlgeschlagen', 'Sending failed') + why) + '. <a href="' + esc(mail) + '" style="color:inherit;text-decoration:underline">' + esc(L('Stattdessen per E-Mail-Programm senden', 'Send via your email app instead')) + '</a>';
+      })
+      .then(function () { s.disabled = false; });
+  });
+
+  /* ---------- events ---------- */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('[data-act]') : null;
+    if (!b) return;
+    var act = b.dataset.act, i = +b.dataset.i;
+    if (act === 'discord') dcLogin();
+    else if (act === 'botreq') { if (!user) { dcLogin(); } else openReq(); }
+    else if (act === 'impr') { var im = $('impressum'); im.hidden = !im.hidden; if (!im.hidden) im.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    else if (act === 'lang') { lang = lang === 'en' ? 'de' : 'en'; put(LS, 'lang', lang); renderAll(); }
+    else if (act === 'cookies') { cb.hidden = false; }
+    else if (act === 'cons-all') { put(LS, 'eb_consent', 'all'); cb.hidden = true; pollStatus(); pollServer(); }
+    else if (act === 'cons-min') { put(LS, 'eb_consent', 'min'); cb.hidden = true; var dsx = $('dstat'); if (dsx) dsx.hidden = true; srvData = null; renderSrv(); $('sic').textContent = 'U'; }
+    else if (act === 'demo') { var dc = b.dataset.cmd; demoLog.push({ c: dc, n: demoN(dc) }); if (demoLog.length > 5) demoLog.shift(); demoTyping = true; renderDemo(); clearTimeout(demoT); demoT = setTimeout(function () { demoTyping = false; renderDemo(); }, 700); }
+    else if (admin && act === 'areq-load') loadAdminReqs(true);
+    else if (act === 'reqclose') closeReq();
+    else if (act === 'logout') {
+      fetch(API + '/auth/logout', { method: 'POST', credentials: 'include' }).catch(function () {}).then(function () {
+        user = null; admin = false; draft = null; dtexts = null; dfiles = null; busy = false;
+        renderAll(); toast('Abgemeldet.');
+      });
+    }
+    else if (act === 'theme') { var n = theme() === 'dark' ? 'light' : 'dark'; root.setAttribute('data-theme', n); put(LS, 'theme', n); }
+    else if (act === 'tab') { clearTimeout(wipeT); wipeT = 0; tab = b.dataset.t; renderMember(); }
+    else if (act === 'bm-del') { var bm = readBm(); bm.splice(i, 1); put(LS, bmKey(), JSON.stringify(bm)); renderMember(); }
+    else if (act === 'copy') { copyText(files[i].url, 'Link kopiert.'); }
+    else if (act === 'copynotes') { var nt = $('notes'); copyText(nt ? nt.value : '', 'Notizen kopiert.'); }
+    else if (act === 'star') { var fv = readFav(), u1 = files[i].url, ix = fv.indexOf(u1); if (ix > -1) fv.splice(ix, 1); else fv.push(u1); put(LS, favKey(), JSON.stringify(fv)); renderFileList(); }
+    else if (act === 'favfilter') { favOnly = !favOnly; b.classList.toggle('on', favOnly); b.setAttribute('aria-pressed', favOnly); renderFileList(); }
+    else if (act === 'wipe') {
+      if (!wipeT) { b.textContent = 'Wirklich alles löschen?'; wipeT = setTimeout(function () { wipeT = 0; renderMember(); }, 4000); }
+      else { clearTimeout(wipeT); wipeT = 0; wipeUser(); }
+    }
+    else if (admin && act === 'add') { var la = b.dataset.l === 'files' ? dfiles : draft; la.push(b.dataset.l === 'files' ? { label: '', meta: '', url: '', added: new Date().toISOString() } : { label: '', meta: '', url: '' }); relist(b.dataset.l); var ins = document.querySelectorAll('.erow[data-l="' + (b.dataset.l || 'links') + '"]'); var last = ins[ins.length - 1]; if (last) last.querySelector('.inp').focus(); }
+    else if (admin && act === 'del') { (b.dataset.l === 'files' ? dfiles : draft).splice(i, 1); relist(b.dataset.l); }
+    else if (admin && act === 'up' && i > 0) { var lu = b.dataset.l === 'files' ? dfiles : draft; var t1 = lu[i - 1]; lu[i - 1] = lu[i]; lu[i] = t1; relist(b.dataset.l); }
+    else if (admin && act === 'down') { var ld = b.dataset.l === 'files' ? dfiles : draft; if (i < ld.length - 1) { var t2 = ld[i + 1]; ld[i + 1] = ld[i]; ld[i] = t2; relist(b.dataset.l); } }
+    else if (admin && act === 'reset') { draft = clone(links); dfiles = clone(files); dtexts = clone(texts); dreqs = clone(reqs); renderLinks(); renderFiles(); renderReqStatus(); renderDonate(); toast('Änderungen verworfen.'); }
+    else if (admin && act === 'publish') publishLinks();
+  });
+  document.addEventListener('input', function (e) {
+    var t = e.target;
+    if (admin && t.dataset && t.dataset.t) {
+      dtexts[t.dataset.t] = t.textContent; updateBar();
+    } else if (admin && t.dataset && t.dataset.f) {
+      var row = t.closest('[data-i]');
+      if (row) { (row.dataset.l === 'files' ? dfiles : draft)[+row.dataset.i][t.dataset.f] = t.value; t.classList.remove('bad'); updateBar(); }
+    } else if (user && t.id === 'notes') {
+      put(LS, noteKey(), t.value);
+      $('ncount').textContent = t.value.length + ' Zeichen · wird automatisch gespeichert';
+    } else if (t.id === 'fq') { fq = t.value; renderFileList(); }
+    else if (t.id === 'bm-url') t.classList.remove('bad');
+  });
+  document.addEventListener('submit', function (e) {
+    if (e.target.dataset && e.target.dataset.form === 'bm') { e.preventDefault(); addBm(); }
+  });
+
+  /* ---------- Sprache ---------- */
+  var lang = get(LS, 'lang');
+  if (lang !== 'de' && lang !== 'en') lang = ((navigator.language || 'de').slice(0, 2) === 'de') ? 'de' : 'en';
+  function isEn() { return lang === 'en' && !admin; }
+  function L(de, en) { return isEn() ? en : de; }
+  function applyLang() {
+    var en = isEn();
+    root.lang = en ? 'en' : 'de';
+    [].forEach.call(document.querySelectorAll('[data-en]'), function (el) {
+      if (el.dataset.de === undefined && !el.dataset.t) el.dataset.de = el.textContent;
+      if (en) el.textContent = el.dataset.en;
+      else if (el.dataset.de !== undefined) el.textContent = el.dataset.de;
+    });
+    [].forEach.call(document.querySelectorAll('[data-en-ph]'), function (el) {
+      if (el.dataset.dph === undefined) el.dataset.dph = el.getAttribute('placeholder') || '';
+      el.setAttribute('placeholder', en ? el.dataset.enPh : el.dataset.dph);
+    });
+  }
+
+  /* ---------- Cookie-Banner ---------- */
+  function ext() { return get(LS, 'eb_consent') === 'all'; }
+  var cb = document.createElement('div');
+  cb.className = 'cb'; cb.setAttribute('role', 'dialog'); cb.setAttribute('aria-label', 'Cookies');
+  cb.hidden = get(LS, 'eb_consent') !== null;
+  cb.innerHTML = '<p data-en="This site stores settings (theme, sign-in, notes) only in your browser. With Accept all it also loads the live Discord status. Fonts come from Google Fonts.">Diese Seite speichert Einstellungen (Design, Anmeldung, Notizen) nur in deinem Browser. Mit „Alle akzeptieren“ lädt sie zusätzlich den Live-Status von Discord. Die Schriften kommen von Google Fonts.</p>' +
+    '<div class="cb-b"><button class="btn ghost" type="button" data-act="cons-min" data-en="Only necessary">Nur notwendige</button><button class="btn solid" type="button" data-act="cons-all" data-en="Accept all">Alle akzeptieren</button></div>';
+  document.body.appendChild(cb);
+
+  /* ---------- Server-Karte ---------- */
+  var srvData = null;
+  function renderSrv() {
+    var el = $('smeta'); if (!el) return;
+    var loc = isEn() ? 'en-GB' : 'de-DE';
+    el.textContent = srvData
+      ? (isEn() ? Number(srvData.m).toLocaleString(loc) + ' members · ' + Number(srvData.o).toLocaleString(loc) + ' online' : Number(srvData.m).toLocaleString(loc) + ' Mitglieder · ' + Number(srvData.o).toLocaleString(loc) + ' online')
+      : L('Der deutsche Discord-Server', 'The German Discord server');
+  }
+
+  /* ---------- Spenden ---------- */
+  function renderDonate() {
+    var sec = $('donate'); if (!sec) return;
+    var u = normUrl(T('donateurl', ''));
+    var b = $('donbtn');
+    if (u) b.href = u;
+    b.hidden = !u;
+    $('donadm').hidden = !admin;
+    sec.hidden = !(u || admin);
+  }
+
+  /* ---------- Bot-Vorschau ---------- */
+  var DEMO = [
+    { c: '/hilfe', de: 'Ich kann moderieren, Musik spielen, Tickets verwalten und neue Mitglieder begrüßen.', en: 'I can moderate, play music, manage tickets and welcome new members.' },
+    { c: '/ping', de: 'Pong! Antwortzeit: {n} ms', en: 'Pong! Response time: {n} ms' },
+    { c: '/willkommen', de: 'Willkommen auf dem Server, @Neuling! Schau in #regeln vorbei.', en: 'Welcome to the server, @Newcomer! Have a look at #rules.' },
+    { c: '/ticket', de: 'Ticket #{n} erstellt. Ein Teammitglied meldet sich gleich.', en: 'Ticket #{n} created. A team member will reply shortly.' },
+    { c: '/wuerfeln', de: 'Du hast eine {n} gewürfelt.', en: 'You rolled a {n}.' }
+  ];
+  var demoLog = [], demoTyping = false, demoT = 0;
+  function demoN(c) { return c === '/ping' ? 12 + Math.floor(Math.random() * 70) : c === '/ticket' ? 1000 + Math.floor(Math.random() * 900) : 1 + Math.floor(Math.random() * 6); }
+  function dmMsg(av, bot, name, text) {
+    return '<div class="dm-m"><div class="dm-a' + (bot ? ' bot' : '') + '" aria-hidden="true">' + esc(av) + '</div><div><div class="dm-n">' + esc(name) + (bot ? '<span class="tag">Bot</span>' : '') + '</div><div class="dm-t">' + text + '</div></div></div>';
+  }
+  function renderDemo() {
+    var box = $('dm'); if (!box) return;
+    var uname = user ? user.name : L('Du', 'You');
+    var h = '<div class="dm-cmds">' + DEMO.map(function (d) { return '<button class="btn ghost" type="button" data-act="demo" data-cmd="' + esc(d.c) + '">' + esc(d.c) + '</button>'; }).join('') + '</div><div class="dm" aria-live="polite">';
+    if (!demoLog.length) h += '<p class="empty">' + esc(L('Tippe auf einen Befehl.', 'Tap a command.')) + '</p>';
+    demoLog.forEach(function (x, i) {
+      var d = DEMO.filter(function (z) { return z.c === x.c; })[0];
+      h += dmMsg(uname.charAt(0).toUpperCase(), false, uname, '<span class="dm-c">' + esc(x.c) + '</span>');
+      if (i === demoLog.length - 1 && demoTyping) h += dmMsg('U', true, 'Untot Bot', '<span class="dm-dots"><span>●</span><span style="animation-delay:.2s">●</span><span style="animation-delay:.4s">●</span></span>');
+      else h += dmMsg('U', true, 'Untot Bot', esc((isEn() ? d.en : d.de).replace('{n}', x.n)));
+    });
+    box.innerHTML = h + '</div>';
+  }
+
+  /* ---------- Bot-Builder: Funktionen anklicken, Bot als ZIP bauen ---------- */
+  var COGS = [
+    { id: 'allgemein', n: 'Allgemein', cls: 'Allgemein', d: 'Ping, Server- und Userinfo, Avatar und eine Befehlsliste.', b: String.raw`    @app_commands.command(name="ping", description="Zeigt die Latenz")
+    async def ping(self, i: discord.Interaction):
+        await i.response.send_message(f"Pong! {round(self.bot.latency * 1000)} ms")
+
+    @app_commands.command(name="serverinfo", description="Infos zum Server")
+    async def serverinfo(self, i: discord.Interaction):
+        g = i.guild
+        await i.response.send_message(f"**{g.name}**: {g.member_count} Mitglieder, erstellt am {g.created_at:%d.%m.%Y}")
+
+    @app_commands.command(name="userinfo", description="Infos zu einem Mitglied")
+    async def userinfo(self, i: discord.Interaction, member: discord.Member = None):
+        m = member or i.user
+        await i.response.send_message(f"**{m}**: Account seit {m.created_at:%d.%m.%Y}, Server seit {m.joined_at:%d.%m.%Y}")
+
+    @app_commands.command(name="avatar", description="Zeigt ein Profilbild")
+    async def avatar(self, i: discord.Interaction, member: discord.Member = None):
+        await i.response.send_message((member or i.user).display_avatar.url)
+
+    @app_commands.command(name="hilfe", description="Listet alle Befehle")
+    async def hilfe(self, i: discord.Interaction):
+        t = "\n".join(f"/{c.name}: {c.description}" for c in self.bot.tree.get_commands())
+        await i.response.send_message(t, ephemeral=True)` },
+    { id: 'moderation', n: 'Moderation', cls: 'Moderation', d: 'Kicken, bannen, stummschalten und Nachrichten löschen.', b: String.raw`    @app_commands.command(name="kick", description="Mitglied kicken")
+    @app_commands.checks.has_permissions(kick_members=True)
+    async def kick(self, i: discord.Interaction, member: discord.Member, grund: str = "-"):
+        await member.kick(reason=grund)
+        await i.response.send_message(f"{member} wurde gekickt.")
+
+    @app_commands.command(name="ban", description="Mitglied bannen")
+    @app_commands.checks.has_permissions(ban_members=True)
+    async def ban(self, i: discord.Interaction, member: discord.Member, grund: str = "-"):
+        await member.ban(reason=grund)
+        await i.response.send_message(f"{member} wurde gebannt.")
+
+    @app_commands.command(name="timeout", description="Mitglied stummschalten")
+    @app_commands.checks.has_permissions(moderate_members=True)
+    async def timeout(self, i: discord.Interaction, member: discord.Member, minuten: int = 10):
+        await member.timeout(datetime.timedelta(minutes=minuten))
+        await i.response.send_message(f"{member} ist {minuten} Minuten stumm.")
+
+    @app_commands.command(name="clear", description="Nachrichten löschen")
+    @app_commands.checks.has_permissions(manage_messages=True)
+    async def clear(self, i: discord.Interaction, anzahl: int = 10):
+        await i.response.defer(ephemeral=True)
+        n = await i.channel.purge(limit=anzahl)
+        await i.followup.send(f"{len(n)} Nachrichten gelöscht.")` },
+    { id: 'kanal', n: 'Kanalkontrolle', cls: 'Kanal', d: 'Slowmode setzen, Kanäle sperren und entsperren.', b: String.raw`    @app_commands.command(name="slowmode", description="Setzt den Slowmode")
+    @app_commands.checks.has_permissions(manage_channels=True)
+    async def slowmode(self, i: discord.Interaction, sekunden: int):
+        await i.channel.edit(slowmode_delay=sekunden)
+        await i.response.send_message(f"Slowmode: {sekunden} s")
+
+    @app_commands.command(name="lock", description="Kanal sperren")
+    @app_commands.checks.has_permissions(manage_channels=True)
+    async def lock(self, i: discord.Interaction):
+        await i.channel.set_permissions(i.guild.default_role, send_messages=False)
+        await i.response.send_message("Kanal gesperrt.")
+
+    @app_commands.command(name="unlock", description="Kanal entsperren")
+    @app_commands.checks.has_permissions(manage_channels=True)
+    async def unlock(self, i: discord.Interaction):
+        await i.channel.set_permissions(i.guild.default_role, send_messages=None)
+        await i.response.send_message("Kanal entsperrt.")` },
+    { id: 'linkfilter', n: 'Link-Filter', cls: 'Linkfilter', d: 'Löscht Links von Mitgliedern ohne Nachrichten-Rechte.', c: 1, b: String.raw`    @commands.Cog.listener()
+    async def on_message(self, msg):
+        if msg.author.bot or not msg.guild or msg.author.guild_permissions.manage_messages:
+            return
+        if re.search(r"https?://|discord\.gg/", msg.content):
+            await msg.delete()
+            await msg.channel.send(f"{msg.author.mention} Links sind hier nicht erlaubt.", delete_after=5)` },
+    { id: 'logging', n: 'Logging', cls: 'Logging', d: 'Protokolliert gelöschte Nachrichten und Austritte im Kanal #logs.', m: 1, b: String.raw`    def kanal(self, guild):
+        return discord.utils.get(guild.text_channels, name=__LOGCH__)
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, msg):
+        ch = msg.guild and self.kanal(msg.guild)
+        if ch and not msg.author.bot:
+            await ch.send(f"Nachricht von {msg.author} in {msg.channel.mention} gelöscht.")
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        ch = self.kanal(member.guild)
+        if ch:
+            await ch.send(f"{member} hat den Server verlassen.")` },
+    { id: 'willkommen', n: 'Willkommen', cls: 'Willkommen', d: 'Begrüßt neue Mitglieder im System-Kanal des Servers.', m: 1, b: String.raw`    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        ch = member.guild.system_channel
+        if ch:
+            await ch.send(__WELCOME__.replace("{member}", member.mention))` },
+    { id: 'autorolle', n: 'Auto-Rolle', cls: 'Autorolle', d: 'Gibt neuen Mitgliedern automatisch die Rolle „Mitglied“.', m: 1, b: String.raw`    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        rolle = discord.utils.get(member.guild.roles, name=__ROLE__)
+        if rolle:
+            await member.add_roles(rolle)` },
+    { id: 'tickets', n: 'Tickets', cls: 'Tickets', d: 'Private Support-Kanäle erstellen und wieder schließen.', b: String.raw`    @app_commands.command(name="ticket", description="Support-Ticket erstellen")
+    async def ticket(self, i: discord.Interaction, grund: str = "-"):
+        ow = {
+            i.guild.default_role: discord.PermissionOverwrite(view_channel=False),
+            i.user: discord.PermissionOverwrite(view_channel=True, send_messages=True),
+        }
+        ch = await i.guild.create_text_channel(f"ticket-{i.user.name}", overwrites=ow)
+        await ch.send(f"{i.user.mention} Ticket erstellt: {grund}")
+        await i.response.send_message(f"Dein Ticket: {ch.mention}", ephemeral=True)
+
+    @app_commands.command(name="schliessen", description="Ticket schließen")
+    async def schliessen(self, i: discord.Interaction):
+        if i.channel.name.startswith("ticket-"):
+            await i.response.send_message("Ticket wird gelöscht ...")
+            await asyncio.sleep(3)
+            await i.channel.delete()
+        else:
+            await i.response.send_message("Das ist kein Ticket.", ephemeral=True)` },
+    { id: 'level', n: 'Level-System', cls: 'Level', d: 'Sammelt XP für Nachrichten, /level zeigt den Stand.', b: String.raw`    def laden(self):
+        return json.load(open("xp.json")) if os.path.exists("xp.json") else {}
+
+    @commands.Cog.listener()
+    async def on_message(self, msg):
+        if msg.author.bot or not msg.guild:
+            return
+        d = self.laden()
+        k = str(msg.author.id)
+        d[k] = d.get(k, 0) + random.randint(5, 15)
+        json.dump(d, open("xp.json", "w"))
+
+    @app_commands.command(name="level", description="Zeigt dein Level")
+    async def level(self, i: discord.Interaction):
+        xp = self.laden().get(str(i.user.id), 0)
+        await i.response.send_message(f"Level {xp // 100} ({xp} XP)")` },
+    { id: 'umfrage', n: 'Umfragen', cls: 'Umfrage', d: 'Zwei-Optionen-Umfragen mit Reaktionen.', b: String.raw`    @app_commands.command(name="umfrage", description="Startet eine Umfrage")
+    async def umfrage(self, i: discord.Interaction, frage: str, a: str, b: str):
+        await i.response.send_message(f"**{frage}**\n1️⃣ {a}\n2️⃣ {b}")
+        m = await i.original_response()
+        await m.add_reaction("1️⃣")
+        await m.add_reaction("2️⃣")` },
+    { id: 'erinnerung', n: 'Erinnerungen', cls: 'Erinnerung', d: 'Erinnert dich nach einer Anzahl Minuten.', b: String.raw`    @app_commands.command(name="erinnere", description="Erinnert dich später")
+    async def erinnere(self, i: discord.Interaction, minuten: int, text: str):
+        await i.response.send_message(f"Ich erinnere dich in {minuten} Minuten.", ephemeral=True)
+        await asyncio.sleep(minuten * 60)
+        await i.channel.send(f"{i.user.mention} Erinnerung: {text}")` },
+    { id: 'spass', n: 'Spaß', cls: 'Spass', d: 'Würfeln, Münzwurf, Magic 8-Ball und Witze.', b: String.raw`    @app_commands.command(name="wuerfeln", description="Würfelt eine Zahl")
+    async def wuerfeln(self, i: discord.Interaction, seiten: int = 6):
+        await i.response.send_message(f"Du hast eine {random.randint(1, max(2, seiten))} gewürfelt.")
+
+    @app_commands.command(name="muenze", description="Wirft eine Münze")
+    async def muenze(self, i: discord.Interaction):
+        await i.response.send_message(random.choice(["Kopf", "Zahl"]))
+
+    @app_commands.command(name="8ball", description="Stell eine Ja/Nein-Frage")
+    async def ball(self, i: discord.Interaction, frage: str):
+        await i.response.send_message(random.choice(["Ja.", "Nein.", "Vielleicht.", "Auf jeden Fall!", "Eher nicht."]))
+
+    @app_commands.command(name="witz", description="Erzählt einen Witz")
+    async def witz(self, i: discord.Interaction):
+        await i.response.send_message(random.choice([
+            "Warum können Geister so schlecht lügen? Man sieht direkt durch sie hindurch.",
+            "Was macht ein Pirat am Computer? Er drückt die Enter-Taste.",
+            "Es gibt 10 Arten von Menschen: die, die Binärcode verstehen, und die anderen.",
+        ]))` },
+    { id: 'ankuendigung', n: 'Ankündigungen', cls: 'Ankuendigung', d: 'Nachrichten und Embeds im Namen des Bots senden.', b: String.raw`    @app_commands.command(name="say", description="Der Bot sendet eine Nachricht")
+    @app_commands.checks.has_permissions(manage_messages=True)
+    async def say(self, i: discord.Interaction, text: str):
+        await i.response.send_message("Gesendet.", ephemeral=True)
+        await i.channel.send(text)
+
+    @app_commands.command(name="embed", description="Sendet ein Embed")
+    @app_commands.checks.has_permissions(manage_messages=True)
+    async def embed(self, i: discord.Interaction, titel: str, text: str):
+        await i.response.send_message("Gesendet.", ephemeral=True)
+        await i.channel.send(embed=discord.Embed(title=titel, description=text))` },
+    { id: 'warns', n: 'Warn-System', cls: 'Warns', d: 'Mitglieder verwarnen und Verwarnungen anzeigen (gespeichert in warns.json).', b: String.raw`    def laden(self):
+        return json.load(open("warns.json")) if os.path.exists("warns.json") else {}
+
+    @app_commands.command(name="warn", description="Mitglied verwarnen")
+    @app_commands.checks.has_permissions(moderate_members=True)
+    async def warn(self, i: discord.Interaction, member: discord.Member, grund: str = "-"):
+        d = self.laden()
+        d.setdefault(str(member.id), []).append(grund)
+        json.dump(d, open("warns.json", "w"))
+        await i.response.send_message(f"{member.mention} verwarnt ({len(d[str(member.id)])}. Verwarnung): {grund}")
+
+    @app_commands.command(name="warnungen", description="Zeigt Verwarnungen")
+    async def warnungen(self, i: discord.Interaction, member: discord.Member):
+        w = self.laden().get(str(member.id), [])
+        await i.response.send_message(f"{member}: {len(w)} Verwarnung(en)" + ("\n" + "\n".join(w) if w else ""))` },
+    { id: 'economy', n: 'Economy', cls: 'Economy', d: 'Münzen verdienen und Kontostand abfragen (gespeichert in coins.json).', b: String.raw`    def laden(self):
+        return json.load(open("coins.json")) if os.path.exists("coins.json") else {}
+
+    @app_commands.command(name="verdienen", description="Verdiene zufällig Münzen")
+    async def verdienen(self, i: discord.Interaction):
+        d = self.laden()
+        k = str(i.user.id)
+        plus = random.randint(10, 50)
+        d[k] = d.get(k, 0) + plus
+        json.dump(d, open("coins.json", "w"))
+        await i.response.send_message(f"+{plus} Münzen! Kontostand: {d[k]}")
+
+    @app_commands.command(name="konto", description="Zeigt deinen Kontostand")
+    async def konto(self, i: discord.Interaction):
+        await i.response.send_message(f"Kontostand: {self.laden().get(str(i.user.id), 0)} Münzen")` }
+  ];
+  var bbSel = {}, bbQ = '', bbName = 'MeinBot', bbStat = '', bbId = '', bbCmds = [], bbCfg = { welcome: 'Willkommen auf dem Server, {member}!', role: 'Mitglied', logch: 'logs' };
+  var BBPRE = { mod: ['allgemein', 'moderation', 'kanal', 'linkfilter', 'logging', 'warns'], com: ['allgemein', 'willkommen', 'autorolle', 'tickets', 'level', 'umfrage', 'ankuendigung'], fun: ['allgemein', 'spass', 'level', 'economy', 'umfrage'] };
+  try { var sv = JSON.parse(get(LS, 'eb_bb') || 'null'); if (sv) { bbSel = sv.sel || {}; bbName = sv.name || bbName; bbStat = sv.stat || ''; bbId = sv.id || ''; bbCmds = sv.cmds || []; bbCfg = Object.assign(bbCfg, sv.cfg); } } catch (e) {}
+  function bbSave() { put(LS, 'eb_bb', JSON.stringify({ sel: bbSel, name: bbName, stat: bbStat, id: bbId, cmds: bbCmds, cfg: bbCfg })); }
+  function bbFill(b) { return b.replace('__WELCOME__', JSON.stringify(bbCfg.welcome)).replace('__ROLE__', JSON.stringify(bbCfg.role)).replace('__LOGCH__', JSON.stringify(bbCfg.logch)); }
+  function bbCustomPy() {
+    return cogPy({ cls: 'Eigene', b: bbCmds.map(function (c, n) { return '    @app_commands.command(name=' + JSON.stringify(c.n) + ', description="Eigener Befehl")\n    async def cmd' + n + '(self, i: discord.Interaction):\n        await i.response.send_message(' + JSON.stringify(c.t) + ')\n'; }).join('\n') });
+  }
+
+  [
+    { id: 'rollen', n: 'Rollen-Buttons', cls: 'Rollen', d: 'Rollen-Panel: Mitglieder holen oder geben Rollen per Klick.', b: String.raw`    @app_commands.command(name="rollenpanel", description="Erstellt ein Panel mit Rollen-Button")
+    @app_commands.checks.has_permissions(manage_roles=True)
+    async def rollenpanel(self, i: discord.Interaction, rolle: discord.Role, text: str = "Klicke, um die Rolle zu holen oder abzugeben."):
+        v = discord.ui.View(timeout=None)
+        v.add_item(discord.ui.Button(label=rolle.name, custom_id=f"rr:{rolle.id}"))
+        await i.response.send_message(text, view=v)
+
+    @commands.Cog.listener()
+    async def on_interaction(self, i: discord.Interaction):
+        cid = (i.data or {}).get("custom_id", "")
+        if i.type != discord.InteractionType.component or not cid.startswith("rr:"):
+            return
+        r = i.guild.get_role(int(cid[3:]))
+        if r in i.user.roles:
+            await i.user.remove_roles(r)
+            await i.response.send_message(f"{r.name} entfernt.", ephemeral=True)
+        else:
+            await i.user.add_roles(r)
+            await i.response.send_message(f"{r.name} erhalten.", ephemeral=True)` },
+    { id: 'giveaway', n: 'Giveaways', cls: 'Giveaway', d: 'Gewinnspiele mit Teilnahme-Button und automatischer Auslosung.', b: String.raw`    @app_commands.command(name="giveaway", description="Startet ein Gewinnspiel")
+    @app_commands.checks.has_permissions(manage_guild=True)
+    async def giveaway(self, i: discord.Interaction, minuten: int, preis: str):
+        teil = set()
+        v = discord.ui.View(timeout=None)
+        b = discord.ui.Button(label="Teilnehmen", style=discord.ButtonStyle.success)
+
+        async def join(x: discord.Interaction):
+            teil.add(x.user.id)
+            await x.response.send_message("Du bist dabei!", ephemeral=True)
+
+        b.callback = join
+        v.add_item(b)
+        await i.response.send_message(f"**Gewinnspiel: {preis}**\nEnde in {minuten} Minuten.", view=v)
+        await asyncio.sleep(minuten * 60)
+        v.stop()
+        if teil:
+            await i.channel.send(f"Gewinner von **{preis}**: <@{random.choice(list(teil))}>")
+        else:
+            await i.channel.send("Niemand hat teilgenommen.")` },
+    { id: 'antispam', n: 'Anti-Spam', cls: 'Antispam', d: 'Stummschaltung bei Spam (mehr als 5 Nachrichten in 5 Sekunden) und Massen-Erwähnungen.', c: 1, b: String.raw`    log = {}
+
+    @commands.Cog.listener()
+    async def on_message(self, m: discord.Message):
+        if m.author.bot or not m.guild or m.author.guild_permissions.manage_messages:
+            return
+        jetzt = datetime.datetime.now().timestamp()
+        l = [t for t in self.log.get(m.author.id, []) if jetzt - t < 5] + [jetzt]
+        self.log[m.author.id] = l
+        if len(l) > 5 or len(m.mentions) >= 5:
+            self.log[m.author.id] = []
+            await m.author.timeout(datetime.timedelta(minutes=5), reason="Spam")
+            await m.channel.send(f"{m.author.mention} wurde wegen Spam 5 Minuten stumm geschaltet.")` },
+    { id: 'starboard', n: 'Starboard', cls: 'Starboard', d: 'Nachrichten mit 3 Sternen landen im Kanal #starboard.', b: String.raw`    gesehen = set()
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, p: discord.RawReactionActionEvent):
+        if str(p.emoji) != "⭐" or p.message_id in self.gesehen or not p.guild_id:
+            return
+        ch = self.bot.get_channel(p.channel_id)
+        msg = await ch.fetch_message(p.message_id)
+        r = discord.utils.get(msg.reactions, emoji="⭐")
+        ziel = discord.utils.get(msg.guild.text_channels, name="starboard")
+        if not r or r.count < 3 or not ziel:
+            return
+        self.gesehen.add(p.message_id)
+        e = discord.Embed(description=msg.content, color=0xF1C40F)
+        e.set_author(name=msg.author.display_name, icon_url=msg.author.display_avatar.url)
+        e.add_field(name="Original", value=f"[Zur Nachricht]({msg.jump_url})")
+        await ziel.send(f"⭐ {r.count} in {ch.mention}", embed=e)` },
+    { id: 'autoantwort', n: 'Auto-Antworten', cls: 'Autoantwort', d: 'Stichwort erkennen und automatisch antworten.', c: 1, b: String.raw`    def laden(self):
+        try:
+            return json.load(open("antworten.json"))
+        except Exception:
+            return {}
+
+    @app_commands.command(name="autoantwort", description="Legt eine automatische Antwort fest")
+    @app_commands.checks.has_permissions(manage_guild=True)
+    async def autoantwort(self, i: discord.Interaction, stichwort: str, antwort: str):
+        d = self.laden()
+        d[stichwort.lower()] = antwort
+        json.dump(d, open("antworten.json", "w"))
+        await i.response.send_message(f"Auf {stichwort} antworte ich jetzt automatisch.", ephemeral=True)
+
+    @commands.Cog.listener()
+    async def on_message(self, m: discord.Message):
+        if m.author.bot:
+            return
+        for k, v in self.laden().items():
+            if k in m.content.lower():
+                await m.channel.send(v)
+                break` },
+    { id: 'geburtstag', n: 'Geburtstage', cls: 'Geburtstag', d: 'Geburtstag eintragen, Glückwunsch um 9 Uhr im System-Kanal.', m: 1, b: String.raw`    def laden(self):
+        try:
+            return json.load(open("geburtstage.json"))
+        except Exception:
+            return {}
+
+    async def cog_load(self):
+        self.task = asyncio.create_task(self.schleife())
+
+    async def cog_unload(self):
+        self.task.cancel()
+
+    async def schleife(self):
+        await self.bot.wait_until_ready()
+        while True:
+            jetzt = datetime.datetime.now()
+            if jetzt.hour == 9:
+                for uid, tag in self.laden().items():
+                    if tag == f"{jetzt.day}.{jetzt.month}":
+                        for g in self.bot.guilds:
+                            mem = g.get_member(int(uid))
+                            if mem and g.system_channel:
+                                await g.system_channel.send(f"Alles Gute zum Geburtstag, {mem.mention}!")
+                await asyncio.sleep(3600)
+            else:
+                await asyncio.sleep(600)
+
+    @app_commands.command(name="geburtstag", description="Trägt deinen Geburtstag ein")
+    async def geburtstag(self, i: discord.Interaction, tag: int, monat: int):
+        d = self.laden()
+        d[str(i.user.id)] = f"{tag}.{monat}"
+        json.dump(d, open("geburtstage.json", "w"))
+        await i.response.send_message(f"Gespeichert: {tag}.{monat}.", ephemeral=True)` },
+    { id: 'vorschlaege', n: 'Vorschläge', cls: 'Vorschlaege', d: 'Vorschläge einreichen, Mitglieder stimmen mit 👍 und 👎 ab.', b: String.raw`    @app_commands.command(name="vorschlag", description="Reicht einen Vorschlag ein")
+    async def vorschlag(self, i: discord.Interaction, text: str):
+        e = discord.Embed(title="Neuer Vorschlag", description=text, color=0x5865F2)
+        e.set_footer(text=f"von {i.user.display_name}")
+        await i.response.send_message(embed=e)
+        m = await i.original_response()
+        await m.add_reaction("👍")
+        await m.add_reaction("👎")` },
+    { id: 'counting', n: 'Counting', cls: 'Counting', d: 'Zählspiel im Kanal #counting. Wer sich vertut, startet neu.', c: 1, b: String.raw`    nxt = 1
+    last = None
+
+    @commands.Cog.listener()
+    async def on_message(self, m: discord.Message):
+        if m.author.bot or getattr(m.channel, "name", "") != "counting":
+            return
+        if m.content.strip() == str(self.nxt) and m.author.id != self.last:
+            self.nxt += 1
+            self.last = m.author.id
+            await m.add_reaction("✅")
+        else:
+            self.nxt = 1
+            self.last = None
+            await m.add_reaction("❌")
+            await m.channel.send(f"{m.author.mention} hat sich vertan. Weiter bei 1!")` },
+    { id: 'tempvoice', n: 'Temp-Voice', cls: 'Tempvoice', d: 'Join-to-create: Der Kanal "Neuer Raum" erstellt einen eigenen Sprachkanal.', m: 1, b: String.raw`    temp = set()
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, m, vor, nach):
+        if nach.channel and nach.channel.name == "Neuer Raum":
+            k = await m.guild.create_voice_channel(f"Raum von {m.display_name}", category=nach.channel.category)
+            self.temp.add(k.id)
+            await m.move_to(k)
+        if vor.channel and vor.channel.id in self.temp and not vor.channel.members:
+            self.temp.discard(vor.channel.id)
+            await vor.channel.delete()` }
+  ].forEach(function (c) { COGS.push(c); });
+  BBPRE.gam = ['allgemein', 'level', 'giveaway', 'rollen', 'tempvoice', 'counting', 'vorschlaege'];
+  BBPRE.sup = ['allgemein', 'tickets', 'autoantwort', 'vorschlaege', 'willkommen', 'rollen'];
+  BBPRE.min = ['allgemein'];
+  COGS.forEach(function (c) {
+    c.cmds = (c.b.match(/command\(name="[^"]+"/g) || []).map(function (s) { return '/' + s.slice(14, -1); });
+    c.ev = /Cog\.listener/.test(c.b);
+  });
+  var PYH = 'import asyncio\nimport datetime\nimport json\nimport os\nimport random\nimport re\n\nimport discord\nfrom discord import app_commands\nfrom discord.ext import commands\n\n\n';
+  function cogPy(c) { return PYH + 'class ' + c.cls + '(commands.Cog):\n    def __init__(self, bot):\n        self.bot = bot\n\n' + bbFill(c.b) + '\n\n\nasync def setup(bot):\n    await bot.add_cog(' + c.cls + '(bot))\n'; }
+
+  /* ZIP ohne Bibliothek (ohne Kompression) */
+  var CRC = (function () { var t = [], c, n, k; for (n = 0; n < 256; n++) { c = n; for (k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  function crc32(b) { var c = -1; for (var i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ -1) >>> 0; }
+  function zip(list) {
+    var enc = new TextEncoder(), parts = [], cd = [], off = 0, cs = 0;
+    list.forEach(function (f) {
+      var nm = enc.encode(f.n), d = enc.encode(f.d), crc = crc32(d);
+      var h = new DataView(new ArrayBuffer(30));
+      h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true); h.setUint16(12, 0x21, true);
+      h.setUint32(14, crc, true); h.setUint32(18, d.length, true); h.setUint32(22, d.length, true); h.setUint16(26, nm.length, true);
+      parts.push(h.buffer, nm, d);
+      var c = new DataView(new ArrayBuffer(46));
+      c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint16(8, 0x0800, true); c.setUint16(14, 0x21, true);
+      c.setUint32(16, crc, true); c.setUint32(20, d.length, true); c.setUint32(24, d.length, true); c.setUint16(28, nm.length, true); c.setUint32(42, off, true);
+      cd.push(c.buffer, nm);
+      off += 30 + nm.length + d.length;
+    });
+    cd.forEach(function (x) { cs += x.byteLength; });
+    var e = new DataView(new ArrayBuffer(22));
+    e.setUint32(0, 0x06054b50, true); e.setUint16(8, list.length, true); e.setUint16(10, list.length, true); e.setUint32(12, cs, true); e.setUint32(16, off, true);
+    return new Blob(parts.concat(cd, [e.buffer]), { type: 'application/zip' });
+  }
+
+  function bbCount() { var n = 0, m = 0; COGS.forEach(function (c) { if (bbSel[c.id]) { n++; m += c.cmds.length; } }); return [n + (bbCmds.length ? 1 : 0), m + bbCmds.length]; }
+  function bbGrid() {
+    var q = bbQ.trim().toLowerCase(), h = '';
+    COGS.forEach(function (c) {
+      if (q && (c.n + ' ' + c.d + ' ' + c.cmds.join(' ')).toLowerCase().indexOf(q) < 0) return;
+      var on = !!bbSel[c.id];
+      h += '<button class="bbc" type="button" data-bb="tog" data-id="' + c.id + '" aria-pressed="' + on + '"><b><span>' + esc(c.n) + '</span><span>' + (on ? '✓' : '+') + '</span></b><small>' + esc(c.d) + '</small><span class="bbk">' +
+        c.cmds.map(function (x) { return '<i>' + esc(x) + '</i>'; }).join('') + (c.ev ? '<i>' + esc(L('automatisch', 'automatic')) + '</i>' : '') + '</span></button>';
+    });
+    $('bbg').innerHTML = h || '<p class="empty">' + esc(L('Keine Treffer.', 'No matches.')) + '</p>';
+    var k = bbCount();
+    $('bbn').textContent = k[0] + ' ' + L('Funktionen', 'features') + ' · ' + k[1] + ' ' + L('Befehle', 'commands');
+    $('bbgo').disabled = !k[0];
+  }
+  function renderBB() {
+    var s = $('builder'); if (!s) return;
+    s.innerHTML = '<p class="label">' + esc(L('Bot-Builder', 'Bot builder')) + '</p><p class="hint">' + esc(L('Wähle Funktionen aus und lade deinen fertigen Discord-Bot als ZIP herunter.', 'Pick features and download your finished Discord bot as a ZIP.')) + '</p>' +
+      '<div class="bbf"><input class="inp" id="bbname" maxlength="32" value="' + esc(bbName) + '" placeholder="Bot-Name" aria-label="Bot-Name"><input class="inp" id="bbstat" maxlength="60" value="' + esc(bbStat) + '" placeholder="' + esc(L('Status-Text (optional)', 'Status text (optional)')) + '" aria-label="Status"></div>' +
+      '<div class="ftools"><input class="inp" id="bbq" type="search" value="' + esc(bbQ) + '" placeholder="' + esc(L('Funktionen suchen', 'Search features')) + '" aria-label="Suche" autocomplete="off"><button class="btn ghost" type="button" data-bb="all">' + esc(L('Alle', 'All')) + '</button><button class="btn ghost" type="button" data-bb="none">' + esc(L('Keine', 'None')) + '</button></div>' +
+      '<div class="bbr"><span class="nmeta">Presets</span><button class="btn ghost" type="button" data-bb="pre" data-p="mod">Moderation</button><button class="btn ghost" type="button" data-bb="pre" data-p="com">Community</button><button class="btn ghost" type="button" data-bb="pre" data-p="fun">' + esc(L('Spaß', 'Fun')) + '</button><button class="btn ghost" type="button" data-bb="pre" data-p="gam">Gaming</button><button class="btn ghost" type="button" data-bb="pre" data-p="sup">Support</button><button class="btn ghost" type="button" data-bb="pre" data-p="min">Minimal</button></div><div class="bbg" id="bbg"></div><div class="bbx" id="bbx"></div><div class="bbs"><span class="nmeta" id="bbn"></span><button class="btn ghost" type="button" data-bb="export">Export</button><button class="btn ghost" type="button" data-bb="import">Import</button><button class="btn solid" id="bbgo" type="button" data-bb="build">' + esc(L('Bot bauen (ZIP)', 'Build bot (ZIP)')) + '</button></div>';
+    bbGrid(); bbExtra();
+  }
+  function bbExtra() {
+    var h = '', s = bbSel;
+    if (s.willkommen) h += '<input class="inp" data-bc="welcome" value="' + esc(bbCfg.welcome) + '" placeholder="' + esc(L('Willkommenstext ({member} = Mitglied)', 'Welcome text ({member} = member)')) + '" aria-label="Willkommenstext">';
+    if (s.autorolle) h += '<input class="inp" data-bc="role" value="' + esc(bbCfg.role) + '" placeholder="' + esc(L('Rollenname für neue Mitglieder', 'Role name for new members')) + '" aria-label="Rollenname">';
+    if (s.logging) h += '<input class="inp" data-bc="logch" value="' + esc(bbCfg.logch) + '" placeholder="' + esc(L('Name des Log-Kanals', 'Log channel name')) + '" aria-label="Log-Kanal">';
+    h += '<p class="label" style="margin:8px 0 0">' + esc(L('Eigene Befehle', 'Custom commands')) + '</p><div class="bbf"><input class="inp" id="bbcn" maxlength="32" placeholder="' + esc(L('befehl', 'command')) + '" autocapitalize="none" aria-label="Befehlsname"><input class="inp" id="bbct" maxlength="300" placeholder="' + esc(L('Antworttext', 'Reply text')) + '" aria-label="Antworttext"></div><div><button class="btn ghost" type="button" data-bb="addcmd">+ ' + esc(L('Befehl hinzufügen', 'Add command')) + '</button></div>';
+    bbCmds.forEach(function (c, n) { h += '<div class="bm"><span><span class="bn">/' + esc(c.n) + '</span><span class="bh">' + esc(c.t) + '</span></span><button class="ib" type="button" data-bb="delcmd" data-i="' + n + '" aria-label="Löschen">✕</button></div>'; });
+    h += '<input class="inp" id="bbid" value="' + esc(bbId) + '" placeholder="' + esc(L('Client-ID für den Einladungslink (optional)', 'Client ID for the invite link (optional)')) + '" inputmode="numeric" aria-label="Client-ID">';
+    $('bbx').innerHTML = h;
+  }
+  function bbBuild() {
+    var sel = COGS.filter(function (c) { return bbSel[c.id]; }); if (!sel.length && !bbCmds.length) return;
+    var name = bbName.trim() || 'Discord-Bot', st = bbStat.trim();
+    var slug = name.toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || 'discord-bot';
+    var hasM = sel.some(function (c) { return c.m; }), hasC = sel.some(function (c) { return c.c; });
+    var bot = 'import os\n\nimport discord\nfrom discord.ext import commands\nfrom dotenv import load_dotenv\n\nload_dotenv()\nintents = discord.Intents.default()\n' + (hasM ? 'intents.members = True\n' : '') + (hasC ? 'intents.message_content = True\n' : '') +
+      '\n\nclass Bot(commands.Bot):\n    async def setup_hook(self):\n        for f in sorted(os.listdir("cogs")):\n            if f.endswith(".py"):\n                await self.load_extension("cogs." + f[:-3])\n        await self.tree.sync()\n\n\nbot = Bot(command_prefix="!", intents=intents)\n\n\n@bot.event\nasync def on_ready():\n' +
+      (st ? '    await bot.change_presence(activity=discord.Game(name=' + JSON.stringify(st) + '))\n' : '') + '    print(f"Eingeloggt als {bot.user}")\n\n\nbot.run(os.getenv("DISCORD_TOKEN"))\n';
+    var k = bbCount();
+    var readme = '# ' + name + '\n\nDiscord-Bot mit ' + k[0] + ' Funktionen und ' + k[1] + ' Slash-Befehlen, gebaut mit dem Bot-Builder.\n\n## Start\n\n1. Python 3.10 oder neuer installieren\n2. `pip install -r requirements.txt`\n3. `.env.example` in `.env` umbenennen und den Bot-Token aus dem Discord Developer Portal eintragen\n4. `python bot.py`\n' +
+      (bbId.trim() ? '\nBot einladen: https://discord.com/oauth2/authorize?client_id=' + encodeURIComponent(bbId.trim()) + '&scope=bot+applications.commands&permissions=8\n' : '') +
+      (hasM || hasC ? '\nAktiviere im Developer Portal unter Bot > Privileged Gateway Intents: ' + [hasM ? 'Server Members Intent' : '', hasC ? 'Message Content Intent' : ''].filter(Boolean).join(' und ') + '.\n' : '') +
+      '\n## Funktionen\n\n' + sel.map(function (c) { return '- ' + c.n + ': ' + c.d + (c.cmds.length ? ' (' + c.cmds.join(', ') + ')' : ''); }).join('\n') + (bbCmds.length ? '\n- Eigene Befehle: ' + bbCmds.map(function (c) { return '/' + c.n; }).join(', ') : '') + '\n\nJede Funktion ist ein Cog im Ordner `cogs`. Eine Datei löschen entfernt die Funktion.\n';
+    var f = [{ n: slug + '/bot.py', d: bot }, { n: slug + '/requirements.txt', d: 'discord.py>=2.3\npython-dotenv>=1.0\n' }, { n: slug + '/.env.example', d: 'DISCORD_TOKEN=dein_token_hier\n' }, { n: slug + '/README.md', d: readme }, { n: slug + '/Dockerfile', d: 'FROM python:3.12-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nCMD ["python", "bot.py"]\n' }, { n: slug + '/start.bat', d: '@echo off\r\npip install -r requirements.txt\r\npython bot.py\r\npause\r\n' }, { n: slug + '/start.sh', d: '#!/bin/sh\npip install -r requirements.txt\npython bot.py\n' }];
+    sel.forEach(function (c) { f.push({ n: slug + '/cogs/' + c.id + '.py', d: cogPy(c) }); });
+    f.push({ n: slug + '/docker-compose.yml', d: 'services:\n  bot:\n    build: .\n    env_file: .env\n    restart: unless-stopped\n' }, { n: slug + '/Procfile', d: 'worker: python bot.py\n' });
+    if (bbCmds.length) f.push({ n: slug + '/cogs/eigene.py', d: bbCustomPy() });
+    var url = URL.createObjectURL(zip(f)), a = document.createElement('a');
+    a.href = url; a.download = slug + '.zip'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    toast(L('Bot gebaut. Der Download startet.', 'Bot built. Download starting.')); confetti();
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('[data-bb]') : null; if (!b) return;
+    var a = b.dataset.bb;
+    if (a === 'tog') { if (bbSel[b.dataset.id]) delete bbSel[b.dataset.id]; else bbSel[b.dataset.id] = 1; bbGrid(); bbExtra(); }
+    else if (a === 'all' || a === 'none') { COGS.forEach(function (c) { if (a === 'all') bbSel[c.id] = 1; else delete bbSel[c.id]; }); bbGrid(); bbExtra(); }
+    else if (a === 'pre') { bbSel = {}; BBPRE[b.dataset.p].forEach(function (id) { bbSel[id] = 1; }); bbGrid(); bbExtra(); }
+    else if (a === 'addcmd') {
+      var n = $('bbcn').value.toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 32), t = $('bbct').value.trim();
+      if (!n || !t) { toast(L('Name und Antworttext ausfüllen.', 'Fill in name and reply text.')); return; }
+      if (bbCmds.some(function (c) { return c.n === n; })) { toast(L('Diesen Befehl gibt es schon.', 'That command already exists.')); return; }
+      bbCmds.push({ n: n, t: t }); bbExtra(); bbGrid();
+    }
+    else if (a === 'delcmd') { bbCmds.splice(+b.dataset.i, 1); bbExtra(); bbGrid(); }
+    else if (a === 'export') { var js = JSON.stringify({ sel: bbSel, name: bbName, stat: bbStat, id: bbId, cmds: bbCmds, cfg: bbCfg }); (navigator.clipboard ? navigator.clipboard.writeText(js) : Promise.reject()).then(function () { toast(L('Konfiguration kopiert.', 'Config copied.')); }, function () { window.prompt('Konfiguration:', js); }); return; }
+    else if (a === 'import') { var inp = window.prompt(L('Konfiguration einfügen:', 'Paste config:')); if (!inp) return; try { var o = JSON.parse(inp); bbSel = o.sel || {}; bbName = o.name || bbName; bbStat = o.stat || ''; bbId = o.id || ''; bbCmds = o.cmds || []; bbCfg = Object.assign(bbCfg, o.cfg); bbSave(); renderBB(); toast(L('Importiert.', 'Imported.')); } catch (x) { toast(L('Ungültige Konfiguration.', 'Invalid config.')); } return; }
+    else if (a === 'build') { bbBuild(); return; }
+    bbSave();
+  });
+  document.addEventListener('input', function (e) {
+    var t = e.target;
+    if (t.id === 'bbq') { bbQ = t.value; bbGrid(); return; }
+    if (t.id === 'bbname') bbName = t.value; else if (t.id === 'bbstat') bbStat = t.value; else if (t.id === 'bbid') bbId = t.value; else if (t.dataset && t.dataset.bc) bbCfg[t.dataset.bc] = t.value; else return;
+    bbSave();
+  });
+
+  /* ---------- Anfrage-Status ---------- */
+  var STAT = { received: ['Eingegangen', 'Received'], working: ['In Arbeit', 'In progress'], done: ['Fertig', 'Done'], declined: ['Abgelehnt', 'Declined'] };
+  function stLabel(k) { var t = STAT[k] || STAT.received; return isEn() ? t[1] : t[0]; }
+  function statusOf(code) { code = String(code).trim().toUpperCase(); for (var i = 0; i < reqs.length; i++) if (String(reqs[i].code).toUpperCase() === code) return reqs[i].status; return null; }
+  function genCode() { return 'BOT-' + Math.random().toString(36).slice(2, 7).toUpperCase(); }
+  function rkey() { return 'eb_reqs_' + (user ? user.name : ''); }
+  function readReqs() { if (!user) return []; try { var a = JSON.parse(get(LS, rkey()) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+  function saveReq(code) { if (!user) return; var a = readReqs(); a.unshift({ code: code, date: new Date().toISOString() }); put(LS, rkey(), JSON.stringify(a.slice(0, 20))); }
+  function fdate(iso) { try { return new Date(iso).toLocaleDateString(isEn() ? 'en-GB' : 'de-DE', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return ''; } }
+  var reqStat = {}, adminReqs = null, adminErr = '', adminTried = false;
+  function renderReqStatus() {
+    var sec = $('reqstat'), box = $('stbox'); if (!sec || !box) return;
+    sec.hidden = !user;
+    if (!user) { box.innerHTML = ''; return; }
+    if (admin) { renderAdminReqs(box); return; }
+    var mine = readReqs();
+    box.innerHTML = mine.length ? '<div>' + mine.map(function (r) {
+      return '<div class="bm"><div><span class="bn">' + esc(r.code) + '</span><span class="bh">' + esc(fdate(r.date)) + '</span></div><span class="tag">' + esc(stLabel(reqStat[r.code] || 'received')) + '</span></div>';
+    }).join('') + '</div>' : '<p class="hint">' + esc(L('Du hast noch keine Anfrage gesendet.', 'You have not sent a request yet.')) + '</p>';
+  }
+  function renderAdminReqs(box) {
+    if (adminReqs === null && !adminTried && admin) { adminTried = true; loadAdminReqs(false); }
+    var h = '<p class="hint">Admin: Alle Anfragen. Mehr Details im <a href="dashboard.html" style="color:inherit">Dashboard</a>.</p>';
+    if (adminErr) h += '<p class="err" role="status">' + esc(adminErr) + '</p>';
+    if (adminReqs === null) h += '<button class="btn solid" type="button" data-act="areq-load">Anfragen laden</button>';
+    else if (!adminReqs.length) h += '<p class="hint">Keine Anfragen.</p>';
+    else h += '<div>' + adminReqs.map(function (r) {
+      return '<div class="bm"><div><span class="bn">' + esc(r.code) + '</span><span class="bh">' + esc(r.name) + (r.user ? ' · @' + esc(r.user) : '') + ' · ' + esc(fdate(r.date)) + '</span></div>' +
+        '<select class="inp" data-ars="' + esc(r.code) + '" aria-label="Status" style="width:auto;padding:8px 10px">' + Object.keys(STAT).map(function (k) { return '<option value="' + k + '"' + (r.status === k ? ' selected' : '') + '>' + STAT[k][0] + '</option>'; }).join('') + '</select></div>';
+    }).join('') + '</div>';
+    box.innerHTML = h;
+  }
+  function loadAdminReqs(ask) {
+    if (!admin) return;
+    adminErr = 'Lädt …'; renderReqStatus();
+    fetch(API + '/requests', { credentials: 'include' }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { r: r, j: j }; }); }).then(function (x) {
+      if (!x.r.ok) throw new Error(x.j.error || 'Fehler ' + x.r.status);
+      adminReqs = x.j.requests || []; adminErr = ''; renderReqStatus();
+    }).catch(function (e) { adminErr = e.message || 'Laden fehlgeschlagen.'; renderReqStatus(); });
+  }
+  function fetchMyStatus() {
+    if (!user || admin) return;
+    var codes = readReqs().map(function (r) { return r.code; }); if (!codes.length) return;
+    fetch(API + '/mystatus', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user: user.name, discordId: user.dc, codes: codes }) })
+      .then(function (r) { return r.json(); }).then(function (j) { if (j && j.status) { reqStat = j.status; renderReqStatus(); } }).catch(function () {});
+  }
+  document.addEventListener('change', function (e) {
+    var t = e.target; if (!admin || !t.dataset || !t.dataset.ars) return;
+    var code = t.dataset.ars, v = t.value;
+    fetch(API + '/status', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: code, status: v }) })
+      .then(function (r) { if (!r.ok) throw new Error(); (adminReqs || []).forEach(function (x) { if (x.code === code) x.status = v; }); toast('Status gespeichert.'); })
+      .catch(function () { toast('Speichern fehlgeschlagen.'); loadAdminReqs(false); });
+  });
+  document.addEventListener('submit', function (e) {
+    if (!e.target.dataset || e.target.dataset.form !== 'st') return;
+    e.preventDefault();
+    var c = $('st-code').value.trim().toUpperCase(), out = $('st-res'), st = c ? statusOf(c) : null;
+    out.textContent = !c ? L('Gib deinen Anfrage-Code ein.', 'Enter your request code.')
+      : st ? c + ': ' + stLabel(st)
+      : L('Zu diesem Code gibt es noch kein Update. Prüfe die Schreibweise oder schau später nochmal vorbei.', 'There is no update for this code yet. Check the spelling or come back later.');
+  });
+  function rqSet(e) {
+    var t = e.target;
+    if (!admin || !t.dataset || !t.dataset.rqf) return;
+    var row = t.closest('[data-rq]'); if (!row) return;
+    dreqs[+row.dataset.rq][t.dataset.rqf] = t.value; updateBar();
+  }
+  document.addEventListener('input', rqSet);
+  document.addEventListener('change', rqSet);
+  document.addEventListener('input', function (e) { if (e.target.dataset && e.target.dataset.t === 'donateurl') renderDonate(); });
+
+  /* ---------- Kleine Spielereien ---------- */
+  function confetti() {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var box = document.createElement('div');
+    box.style.cssText = 'position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:70';
+    document.body.appendChild(box);
+    for (var i = 0; i < 48; i++) {
+      var p = document.createElement('i'), sz = 6 + Math.random() * 6;
+      p.style.cssText = 'position:absolute;top:-12px;left:' + (Math.random() * 100) + '%;width:' + sz + 'px;height:' + (sz * 1.6) + 'px;background:var(--fg);opacity:.' + (4 + Math.floor(Math.random() * 5)) + ';border-radius:2px';
+      box.appendChild(p);
+      if (p.animate) p.animate([{ transform: 'translate(0,0) rotate(0deg)' }, { transform: 'translate(' + ((Math.random() - .5) * 240) + 'px,' + (window.innerHeight + 40) + 'px) rotate(' + (Math.random() * 720) + 'deg)' }], { duration: 1600 + Math.random() * 1400, easing: 'cubic-bezier(.2,.6,.4,1)', fill: 'forwards' });
+    }
+    setTimeout(function () { box.remove(); }, 3400);
+  }
+  var KON = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'], kpos = 0;
+  document.addEventListener('keydown', function (e) {
+    var tg = e.target; if (tg && (tg.tagName === 'INPUT' || tg.tagName === 'TEXTAREA' || tg.isContentEditable)) return;
+    if (!S.egg) return;
+    var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (k === KON[kpos]) { kpos++; if (kpos === KON.length) { kpos = 0; confetti(); toast(L('Cheat aktiviert: +30 Leben', 'Cheat activated: +30 lives')); } }
+    else kpos = k === KON[0] ? 1 : 0;
+  });
+  var hClicks = 0, hT = 0;
+  document.addEventListener('click', function (e) {
+    var h1 = e.target.closest && e.target.closest('h1'); if (!h1 || admin || !S.egg) return;
+    hClicks++; clearTimeout(hT); hT = setTimeout(function () { hClicks = 0; }, 1500);
+    if (hClicks >= 5) { hClicks = 0; confetti(); toast(L('Du hast mich gefunden.', 'You found me.')); }
+  });
+
+  function renderAll() { syncGate(); renderTop(); renderLinks(); renderFiles(); renderMember(); renderSrv(); renderDonate(); renderDemo(); renderBB(); renderReqStatus(); applyTexts(); applyLang(); }
+  // Discord-Status ueber Lanyard (funktioniert auf normalen Webseiten, im Artifact blockiert)
+  var DID = '1509263591000510585';
+  function pollStatus() {
+    var el = document.getElementById('dstat'); if (!el || !window.fetch || !ext()) return;
+    fetch('https://api.lanyard.rest/v1/users/' + DID).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || !j.success) { el.hidden = true; return; }
+      var d = j.data, st = d.discord_status || 'offline';
+      var names = { online: 'Online', idle: 'Abwesend', dnd: 'Bitte nicht stören', offline: 'Offline' };
+      var cls = st === 'online' ? 'on' : st;
+      var txt = names[st] || 'Offline', extra = '';
+      var acts = d.activities || [];
+      for (var i = 0; i < acts.length; i++) {
+        if (acts[i].type === 4 && acts[i].state) extra = acts[i].state;
+        else if (acts[i].type === 0 && !extra) extra = 'Spielt ' + acts[i].name;
+      }
+      el.className = 'dstat ' + cls; el.hidden = false;
+      el.querySelector('.dt').textContent = 'Discord · ' + txt + (extra ? ' · ' + extra : '');
+    }).catch(function () { el.hidden = true; });
+  }
+  pollStatus(); setInterval(pollStatus, 30000);
+
+
+  // Server-Karte: Zahlen und Icon direkt vom Discord-Invite (nur mit Zustimmung)
+  var INVITE = 'ySwntZUFBh';
+  function pollServer() {
+    if (!window.fetch || !ext()) return;
+    fetch('https://discord.com/api/v10/invites/' + INVITE + '?with_counts=true').then(function (r) { return r.json(); }).then(function (j) {
+      var g = j && j.guild; if (!g) return;
+      if (j.approximate_member_count != null) { srvData = { m: j.approximate_member_count, o: j.approximate_presence_count }; renderSrv(); }
+      var ic = $('sic');
+      if (g.icon) { var im = document.createElement('img'); im.alt = ''; im.src = 'https://cdn.discordapp.com/icons/' + g.id + '/' + g.icon + '.png?size=128'; ic.textContent = ''; ic.appendChild(im); }
+    }).catch(function () {});
+  }
+  pollServer(); setInterval(pollServer, 120000);
+
+  /* ---------- Einstellungen ---------- */
+  var S0 = { acc: 'mono', fs: 'm', calm: false, egg: true }, S = Object.assign({}, S0);
+  try { Object.assign(S, JSON.parse(get(LS, 'eb_set') || '{}')); } catch (e) {}
+  function applySet() {
+    if (S.acc !== 'mono') root.setAttribute('data-acc', S.acc); else root.removeAttribute('data-acc');
+    root.setAttribute('data-fs', S.fs);
+    if (S.calm) root.setAttribute('data-calm', ''); else root.removeAttribute('data-calm');
+  }
+  applySet();
+  var sp = document.createElement('div'); sp.className = 'overlay'; sp.hidden = true; document.body.appendChild(sp);
+  function curTheme() { var t = get(LS, 'theme'); return t === 'dark' || t === 'light' ? t : 'system'; }
+  function seg(k, cur, o) { return '<div class="sg">' + o.map(function (x) { return '<button class="btn ' + (x[0] === cur ? 'solid' : 'ghost') + '" type="button" data-sk="' + k + '" data-sv="' + x[0] + '">' + esc(x[1]) + '</button>'; }).join('') + '</div>'; }
+  function srow(t, h) { return '<div class="sr"><span>' + esc(t) + '</span>' + h + '</div>'; }
+  function renderSet() {
+    var on = L('An', 'On'), off = L('Aus', 'Off');
+    sp.innerHTML = '<div class="modal" role="dialog" aria-modal="true" style="max-height:calc(100dvh - 40px);overflow:auto"><button class="ib x" type="button" data-sk="close" aria-label="Close">✕</button><h2>' + esc(L('Einstellungen', 'Settings')) + '</h2>' +
+      srow(L('Design', 'Theme'), seg('theme', curTheme(), [['system', 'System'], ['light', L('Hell', 'Light')], ['dark', L('Dunkel', 'Dark')]])) +
+      srow(L('Akzentfarbe', 'Accent'), seg('acc', S.acc, [['mono', L('Schwarz-Weiß', 'Mono')], ['blue', L('Blau', 'Blue')], ['green', L('Grün', 'Green')], ['purple', L('Lila', 'Purple')], ['orange', 'Orange']])) +
+      srow(L('Schriftgröße', 'Text size'), seg('fs', S.fs, [['s', L('Klein', 'Small')], ['m', 'Normal'], ['l', L('Groß', 'Large')]])) +
+      srow(L('Animationen', 'Animations'), seg('calm', S.calm ? '1' : '0', [['0', on], ['1', off]])) +
+      srow(L('Externe Dienste (Discord-Status, Server-Zahlen)', 'External services (Discord status, server stats)'), seg('ext', ext() ? '1' : '0', [['1', on], ['0', off]])) +
+      srow('Easter Eggs', seg('egg', S.egg ? '1' : '0', [['1', on], ['0', off]])) +
+      '<div class="sr"><button class="btn ghost wide" type="button" data-sk="reset">' + esc(L('Zurücksetzen', 'Reset')) + '</button></div></div>';
+  }
+  function closeSet() { sp.hidden = true; }
+  sp.addEventListener('mousedown', function (e) { if (e.target === sp) closeSet(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sp.hidden) closeSet(); });
+  sp.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-sk]'); if (!b) return;
+    var k = b.dataset.sk, v = b.dataset.sv;
+    if (k === 'close') { closeSet(); return; }
+    if (k === 'reset') { S = Object.assign({}, S0); drop(LS, 'eb_set'); drop(LS, 'theme'); root.removeAttribute('data-theme'); }
+    else if (k === 'theme') { if (v === 'system') { drop(LS, 'theme'); root.removeAttribute('data-theme'); } else { put(LS, 'theme', v); root.setAttribute('data-theme', v); } }
+    else if (k === 'ext') {
+      if (v === '1') { put(LS, 'eb_consent', 'all'); cb.hidden = true; pollStatus(); pollServer(); }
+      else { put(LS, 'eb_consent', 'min'); cb.hidden = true; var d = $('dstat'); if (d) d.hidden = true; srvData = null; renderSrv(); $('sic').textContent = 'U'; }
+    }
+    else S[k] = (k === 'calm' || k === 'egg') ? v === '1' : v;
+    if (k !== 'reset') put(LS, 'eb_set', JSON.stringify(S));
+    applySet(); renderSet();
+  });
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-act=settings],[data-act=discord]'); if (!t) return;
+    if (t.dataset.act === 'settings') { renderSet(); sp.hidden = false; } else dcLogin();
+  });
+
+  /* ---------- Discord OAuth / Backend-Session ---------- */
+  var gt = document.createElement('div');
+  gt.className = 'overlay';
+  gt.style.cssText = 'z-index:40;background:var(--bg)';
+  gt.innerHTML = '<div style="max-width:380px;text-align:center;display:flex;flex-direction:column;gap:14px"><h2 style="margin:0;font-size:2rem;letter-spacing:-.03em">' + esc(L('Willkommen', 'Welcome')) + '</h2><p class="hint" style="margin:0 auto">' + esc(L('Melde dich mit Discord an, um die Seite zu nutzen.', 'Sign in with Discord to use this site.')) + '</p><button class="btn solid wide" type="button" data-act="discord">' + esc(L('Mit Discord anmelden', 'Sign in with Discord')) + '</button></div>';
+  document.body.appendChild(gt);
+
+  function syncGate() {
+    gt.hidden = !!(user && user.dc);
+  }
+
+  function dcLogin() {
+    window.location.href = API + '/auth/discord';
+  }
+
+  function loadDiscordSession() {
+    fetch(API + '/auth/me', { credentials: 'include', cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('Session konnte nicht geladen werden.');
+        return r.json();
+      })
+      .then(function (data) {
+        if (!data.authenticated || !data.user) {
+          user = null;
+          admin = false;
+          draft = null; dtexts = null; dfiles = null; dreqs = null;
+          renderAll();
+          return;
+        }
+        user = {
+          name: data.user.global_name || data.user.username || 'Discord User',
+          dc: data.user.id,
+          since: get(LS, 'eb_discord_since_' + data.user.id) || new Date().toISOString()
+        };
+        put(LS, 'eb_discord_since_' + data.user.id, user.since);
+        admin = data.user.admin === true;
+        draft = admin ? clone(links) : null;
+        dtexts = admin ? clone(texts) : null;
+        dfiles = admin ? clone(files) : null;
+        dreqs = admin ? clone(reqs) : null;
+        renderAll();
+        fetchMyStatus();
+      })
+      .catch(function () {
+        user = null;
+        admin = false;
+        draft = null; dtexts = null; dfiles = null; dreqs = null;
+        renderAll();
+      });
+  }
+
+  loadDiscordSession();
+  touchVisit();
+  renderAll();
+
+  /* ---------- Mitglieder: Aufgaben, Meine Bots, Export ---------- */
+  function readTd() { try { var a = JSON.parse(get(LS, 'eb_todo_' + user.name) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+  function readMb() { try { var a = JSON.parse(get(LS, 'eb_bots_' + user.name) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+  function addTd() { var inp = $('td-in'), t = inp && inp.value.trim(); if (!t) return; var a = readTd(); a.unshift({ t: t, d: 0 }); put(LS, 'eb_todo_' + user.name, JSON.stringify(a)); renderMember(); var n = $('td-in'); if (n) n.focus(); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.id === 'td-in') { e.preventDefault(); addTd(); } else if (e.key === 'Enter' && e.target.id === 'mb-n') { e.preventDefault(); var b = document.querySelector('[data-act=mb-save]'); if (b) b.click(); } });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-act]'); if (!b || !user) return;
+    var act = b.dataset.act, i = +b.dataset.i;
+    if (act === 'td-add') addTd();
+    else if (act === 'td-tg') { var a = readTd(); if (a[i]) a[i].d = a[i].d ? 0 : 1; put(LS, 'eb_todo_' + user.name, JSON.stringify(a)); renderMember(); }
+    else if (act === 'td-del') { var a2 = readTd(); a2.splice(i, 1); put(LS, 'eb_todo_' + user.name, JSON.stringify(a2)); renderMember(); }
+    else if (act === 'mb-save') {
+      var nm = ($('mb-n').value || '').trim() || bbName; if (!Object.keys(bbSel).length && !bbCmds.length) { toast('Wähle zuerst Funktionen im Bot-Builder.'); return; }
+      var m = readMb().filter(function (x) { return x.n !== nm; }); m.unshift({ n: nm, cfgd: clone({ sel: bbSel, name: bbName, stat: bbStat, id: bbId, cmds: bbCmds, cfg: bbCfg }) });
+      put(LS, 'eb_bots_' + user.name, JSON.stringify(m)); renderMember(); toast('Gespeichert.');
+    }
+    else if (act === 'mb-load') { var o = (readMb()[i] || {}).cfgd; if (!o) return; bbSel = o.sel || {}; bbName = o.name || bbName; bbStat = o.stat || ''; bbId = o.id || ''; bbCmds = o.cmds || []; bbCfg = Object.assign(bbCfg, o.cfg); bbSave(); renderBB(); setPg('bot'); toast('Konfiguration geladen.'); }
+    else if (act === 'mb-del') { var m2 = readMb(); m2.splice(i, 1); put(LS, 'eb_bots_' + user.name, JSON.stringify(m2)); renderMember(); }
+    else if (act === 'exportall') {
+      var dump = { user: user.name, lesezeichen: readBm(), notizen: get(LS, noteKey()) || '', aufgaben: readTd(), bots: readMb(), favoriten: readFav() };
+      var u = URL.createObjectURL(new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' })), l = document.createElement('a');
+      l.href = u; l.download = user.name + '-daten.json'; document.body.appendChild(l); l.click(); l.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 4000); toast('Export gestartet.');
+    }
+  });
+  var PGS = ['start', 'bot', 'member'], wrapEl = document.querySelector('.wrap');
+  wrapEl.dataset.pg = 'start';
+  function syncNv() {
+    var b = document.querySelector('.nv[data-pg=member]'); if (!b) return;
+    b.hidden = false;
+  }
+  function setPg(p, keep) {
+    if (PGS.indexOf(p) < 0) p = 'start'; wrapEl.dataset.pg = p;
+    document.querySelectorAll('.nv').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.pg === p ? 'true' : 'false'); });
+    if (!keep) { try { history.replaceState(null, '', '#' + p); } catch (e) {} window.scrollTo(0, 0); }
+  }
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.nv'); if (b) setPg(b.dataset.pg); });
+  window.addEventListener('hashchange', function () { setPg(location.hash.slice(1), true); });
+  setPg(location.hash.slice(1), true); syncNv();
+
+  // data.json aus GitHub laden (überschreibt die eingebetteten Standardwerte)
+  fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+    if (!j) return;
+    if (Array.isArray(j.links)) links = j.links;
+    if (j.texts) texts = j.texts;
+    if (Array.isArray(j.files)) files = j.files;
+    if (Array.isArray(j.reqs)) reqs = j.reqs;
+    if (admin) { draft = clone(links); dtexts = clone(texts); dfiles = clone(files); }
+    renderAll();
+  }).catch(function () {});
+})();
+</script>
+
+</body></html>
