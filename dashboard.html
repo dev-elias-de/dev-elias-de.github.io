@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Anfragen · Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  :root { --bg:#fafafa; --fg:#0a0a0a; --muted:#6b6b6b; --line:#e2e2e2; --font:"Geist",system-ui,-apple-system,sans-serif; --mono:"Geist Mono",ui-monospace,Menlo,monospace; color-scheme:light; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0a0a0a; --fg:#f5f5f5; --muted:#8f8f8f; --line:#262626; color-scheme:dark; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 var(--font); padding:28px 20px calc(48px + env(safe-area-inset-bottom,0px)); padding-top:calc(28px + env(safe-area-inset-top,0px)); -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:28px; }
+  header { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+  h1 { margin:0; font-size:clamp(2rem,8vw,3rem); letter-spacing:-.04em; line-height:1; font-weight:600; }
+  .btn { font:500 13px/1 var(--mono); padding:10px 16px; border-radius:999px; border:1px solid var(--fg); background:transparent; color:var(--fg); cursor:pointer; text-decoration:none; display:inline-block; }
+  .btn:hover { background:var(--fg); color:var(--bg); }
+  .btn.solid { background:var(--fg); color:var(--bg); } .btn.solid:hover { opacity:.85; }
+  .btn.ghost { border-color:var(--line); } .btn.ghost:hover { border-color:var(--fg); background:transparent; color:var(--fg); }
+  .btn:focus-visible, select:focus-visible, input:focus-visible { outline:2px solid var(--fg); outline-offset:3px; }
+  .inp { width:100%; font:15px var(--font); padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:transparent; color:var(--fg); }
+  .login { display:flex; flex-direction:column; gap:12px; max-width:360px; }
+  .muted { color:var(--muted); font-size:14px; margin:0; }
+  .err { color:var(--fg); font:500 13px var(--mono); min-height:1.2em; margin:0; }
+  .filters { display:flex; gap:8px; flex-wrap:wrap; }
+  .filters .btn { padding:8px 14px; }
+  .filters .btn[aria-pressed="true"] { background:var(--fg); color:var(--bg); }
+  .list { border-top:1px solid var(--line); }
+  .req { padding:20px 0; border-bottom:1px solid var(--line); display:grid; gap:12px; }
+  .top { display:flex; justify-content:space-between; gap:12px; align-items:baseline; flex-wrap:wrap; }
+  .code { font:500 15px var(--mono); }
+  .date { font:400 12px var(--mono); color:var(--muted); }
+  .who { display:grid; gap:2px; font-size:15px; }
+  .who a { color:inherit; }
+  .feat { margin:0; white-space:pre-wrap; word-break:break-word; color:var(--muted); font-weight:300; }
+  .ctl { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  select.inp { width:auto; padding:9px 12px; font:500 13px var(--mono); }
+  .empty { padding:36px 0; color:var(--muted); }
+  [hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Anfragen</h1>
+    <div class="ctl">
+      <a class="btn ghost" href="index.html">Zur Seite</a>
+      <button class="btn ghost" id="out" hidden>Abmelden</button>
+    </div>
+  </header>
+
+  <form class="login" id="login">
+    <p class="muted">Gib deinen Admin-Schlüssel ein (ADMIN_KEY deines Servers).</p>
+    <input class="inp" id="key" type="password" autocomplete="current-password" placeholder="Admin-Schlüssel" aria-label="Admin-Schlüssel">
+    <button class="btn solid" type="submit">Anmelden</button>
+    <p class="err" id="lerr" role="status"></p>
+  </form>
+
+  <main id="main" hidden>
+    <div class="filters" id="filters" role="group" aria-label="Filter"></div>
+    <p class="err" id="merr" role="status"></p>
+    <div class="list" id="list"></div>
+  </main>
+</div>
+
+<script>
+(function () {
+  // Adresse deines Servers (dieselbe wie in index.html)
+  var API = 'https://elias-api.duckdns.org';
+  var STAT = { received: 'Eingegangen', working: 'In Arbeit', done: 'Fertig', declined: 'Abgelehnt' };
+  var key = '', all = [], filter = 'all';
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function call(path, body) {
+    return fetch(API + path, { method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': key }, body: body ? JSON.stringify(body) : undefined })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) { var e = new Error(j.error || 'Fehler ' + r.status); e.status = r.status; throw e; } return j; }); });
+  }
+  function fdate(iso) { try { return new Date(iso).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' }); } catch (e) { return ''; } }
+
+  function renderFilters() {
+    var keys = ['all'].concat(Object.keys(STAT));
+    $('filters').innerHTML = keys.map(function (k) {
+      var n = k === 'all' ? all.length : all.filter(function (r) { return r.status === k; }).length;
+      return '<button class="btn" type="button" data-f="' + k + '" aria-pressed="' + (filter === k) + '">' + (k === 'all' ? 'Alle' : STAT[k]) + ' · ' + n + '</button>';
+    }).join('');
+  }
+  function render() {
+    renderFilters();
+    var rows = all.filter(function (r) { return filter === 'all' || r.status === filter; });
+    $('list').innerHTML = rows.length ? rows.map(function (r) {
+      return '<article class="req" data-c="' + esc(r.code) + '">' +
+        '<div class="top"><span class="code">' + esc(r.code) + '</span><span class="date">' + esc(fdate(r.date)) + '</span></div>' +
+        '<div class="who"><strong>' + esc(r.name) + '</strong><a href="mailto:' + esc(r.email) + '">' + esc(r.email) + '</a>' +
+        (r.discord ? '<span>Discord: ' + esc(r.discord) + '</span>' : '') + (r.botName ? '<span>Bot-Name: ' + esc(r.botName) + '</span>' : '') + '</div>' +
+        '<p class="feat">' + esc(r.features) + '</p>' +
+        '<div class="ctl"><select class="inp" data-s aria-label="Status">' + Object.keys(STAT).map(function (k) { return '<option value="' + k + '"' + (r.status === k ? ' selected' : '') + '>' + STAT[k] + '</option>'; }).join('') + '</select>' +
+        '<button class="btn ghost" type="button" data-del>Löschen</button></div></article>';
+    }).join('') : '<p class="empty">Keine Anfragen.</p>';
+  }
+  function load() {
+    $('merr').textContent = 'Lädt …';
+    return call('/requests').then(function (j) { all = j.requests || []; $('merr').textContent = ''; render(); })
+      .catch(function (e) { if (e.status === 401) logout(); else $('merr').textContent = e.message; });
+  }
+  function show() { $('login').hidden = true; $('main').hidden = false; $('out').hidden = false; load(); }
+  function logout() { key = ''; try { sessionStorage.removeItem('eb_key'); } catch (e) {} $('login').hidden = false; $('main').hidden = true; $('out').hidden = true; $('lerr').textContent = 'Schlüssel falsch oder abgelaufen.'; }
+
+  $('login').addEventListener('submit', function (e) {
+    e.preventDefault(); key = $('key').value.trim(); if (!key) return;
+    $('lerr').textContent = 'Prüfe …';
+    call('/requests').then(function (j) { try { sessionStorage.setItem('eb_key', key); } catch (x) {} $('lerr').textContent = ''; all = j.requests || []; $('login').hidden = true; $('main').hidden = false; $('out').hidden = false; render(); })
+      .catch(function (err) { $('lerr').textContent = err.status === 401 ? 'Falscher Schlüssel.' : err.message; });
+  });
+  $('out').addEventListener('click', function () { logout(); $('lerr').textContent = ''; });
+  $('filters').addEventListener('click', function (e) { var b = e.target.closest('[data-f]'); if (b) { filter = b.dataset.f; render(); } });
+  $('list').addEventListener('change', function (e) {
+    var sel = e.target.closest('[data-s]'); if (!sel) return;
+    var c = sel.closest('[data-c]').dataset.c, v = sel.value;
+    $('merr').textContent = 'Speichere …';
+    call('/status', { code: c, status: v }).then(function () { all.forEach(function (r) { if (r.code === c) r.status = v; }); $('merr').textContent = 'Gespeichert.'; renderFilters(); })
+      .catch(function (err) { $('merr').textContent = err.message; load(); });
+  });
+  $('list').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-del]'); if (!b) return;
+    var c = b.closest('[data-c]').dataset.c;
+    if (!confirm('Anfrage ' + c + ' wirklich löschen?')) return;
+    call('/delete', { code: c }).then(function () { all = all.filter(function (r) { return r.code !== c; }); render(); })
+      .catch(function (err) { $('merr').textContent = err.message; });
+  });
+
+  try { key = sessionStorage.getItem('eb_key') || ''; } catch (e) {}
+  if (key) show();
+})();
+</script>
+</body>
+</html>
