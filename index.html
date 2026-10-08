@@ -1674,11 +1674,11 @@ document.body.appendChild(gt);
 
 function syncGate() {
   if (user && user.dc) {
-    gt.hidden = true;
-  } else {
-    gt.hidden = false;
+    gt.remove();
+  } else if (!document.body.contains(gt)) {
+    document.body.appendChild(gt);
   }
-      }
+}
 
 /* Noch nicht eingeloggt anzeigen, bis Backend die Session bestätigt */
 syncGate();
