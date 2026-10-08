@@ -11,8 +11,10 @@
     "foot": "© 2026 Elias"
   },
   "reqs": [
+    {},
     {
-    
+      "code": "BOT-ANGYN",
+      "status": "received"
     }
   ]
 }
