@@ -1,0 +1,21 @@
+{
+  "links": [
+    {
+      "label": "GitHub",
+      "meta": "Kommt bald...",
+      "url": "https://coming-soon-page-e.netlify.app/"
+    }
+  ],
+  "texts": {
+    "h1": "Hallo ich bin Elias.",
+    "foot": "© 2026 Elias"
+  },
+  "reqs": [
+    {
+      "code": "BOT-XXJ8Y",
+      "status": "working",
+      "title": "Test",
+      "added": "2026-10-08T09:02:52.420Z"
+    }
+  ]
+}
