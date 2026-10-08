@@ -8,13 +8,21 @@
   ],
   "texts": {
     "h1": "Hallo ich bin Elias.",
-    "foot": "© 2026 Elias"
+    "foot": "© 2026 Elias",
+    "f2p": "Der deutsche Discord-Server untot Devs"
   },
   "reqs": [
     {},
     {
       "code": "BOT-ANGYN",
       "status": "working"
+    }
+  ],
+  "files": [
+    {
+      "label": "Discord Bot template",
+      "meta": "Discord bot ist gerade in Entwicklung",
+      "url": "https://coming-soon-page-e.netlify.app/"
     }
   ]
 }
