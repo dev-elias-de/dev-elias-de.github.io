@@ -1673,8 +1673,12 @@ gt.innerHTML =
 document.body.appendChild(gt);
 
 function syncGate() {
-  gt.hidden = !!user;
-}
+  if (user && user.dc) {
+    gt.hidden = true;
+  } else {
+    gt.hidden = false;
+  }
+      }
 
 /* Noch nicht eingeloggt anzeigen, bis Backend die Session bestätigt */
 syncGate();
@@ -1717,8 +1721,8 @@ function loadDiscordSession() {
     console.log('Discord User:', user);
     console.log('Admin:', admin);
 
-    syncGate();
     renderAll();
+    syncGate();
     fetchMyStatus();
   })
   .catch(function (err) {
