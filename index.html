@@ -1654,34 +1654,77 @@
   });
 
   /* ---------- Login-Pflicht: ohne Anmeldung nur der Discord-Button ---------- */
-  var gt = document.createElement('div'); gt.className = 'overlay'; gt.style.cssText = 'z-index:40;background:var(--bg)';
-  gt.innerHTML = '<div style="max-width:380px;text-align:center;display:flex;flex-direction:column;gap:14px"><h2 style="margin:0;font-size:2rem;letter-spacing:-.03em">' + esc(L('Willkommen', 'Welcome')) + '</h2><p class="hint" style="margin:0 auto">' + esc(L('Melde dich mit Discord an, um die Seite zu nutzen.', 'Sign in with Discord to use this site.')) + '</p><button class="btn solid wide" type="button" data-act="discord">' + esc(L('Mit Discord anmelden', 'Sign in with Discord')) + '</button><button class="btn ghost" type="button" data-act="register" style="align-self:center">Admin</button></div>';
-  document.body.appendChild(gt);
-  function syncGate() { gt.hidden = !!user; }
+/* ---------- Login-Pflicht: ohne Anmeldung nur der Discord-Button ---------- */
+var gt = document.createElement('div');
+gt.className = 'overlay';
+gt.style.cssText = 'z-index:40;background:var(--bg)';
 
-  /* ---------- Discord-Login (OAuth2 Implicit Grant, nur Scope "identify") ---------- */
-  function dcLogin() {
-  window.location.href = 'https://discord.com/oauth2/authorize?client_id=1557745548289773699&response_type=code&redirect_uri=https%3A%2F%2Fdev-elias-de.github.io%2Findex.html&scope=identify';
-  }
-  
-  (function () {
-    if (location.hash.indexOf('access_token=') < 0) return;
-    var p = new URLSearchParams(location.hash.slice(1)), st = get(SS, 'eb_dcs'); drop(SS, 'eb_dcs');
-    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
-    if (!st || p.get('state') !== st) { toast(L('Discord-Login fehlgeschlagen.', 'Discord login failed.')); return; }
-    fetch('https://discord.com/api/v10/users/@me', { headers: { Authorization: 'Bearer ' + p.get('access_token') } }).then(function (r) { return r.json(); }).then(function (j) {
-      var n = String(j.username || '').toLowerCase().replace(/[^a-z0-9_.-]/g, '_').slice(0, 20);
-      if (!NAME_RE.test(n)) n = 'dc_' + String(j.id).slice(-6);
-      if (n === ADMIN) n = 'dc_' + String(j.id).slice(-6);
-      drop(SS, 'eb_admin'); admin = false; draft = null; dtexts = null; dfiles = null;
-      setUser(n); user.dc = j.id; put(LS, 'eb_user', JSON.stringify(user));
-      renderAll(); fetchMyStatus(); setPg('member'); toast(L('Willkommen, ', 'Welcome, ') + n + '.');
-    }).catch(function () { toast(L('Discord-Login fehlgeschlagen.', 'Discord login failed.')); });
-  })();
+gt.innerHTML =
+  '<div style="max-width:380px;text-align:center;display:flex;flex-direction:column;gap:14px">' +
+  '<h2 style="margin:0;font-size:2rem;letter-spacing:-.03em">' +
+  esc(L('Willkommen', 'Welcome')) +
+  '</h2>' +
+  '<p class="hint" style="margin:0 auto">' +
+  esc(L('Melde dich mit Discord an, um die Seite zu nutzen.', 'Sign in with Discord to use this site.')) +
+  '</p>' +
+  '<button class="btn solid wide" type="button" data-act="discord">' +
+  esc(L('Mit Discord anmelden', 'Sign in with Discord')) +
+  '</button>' +
+  '</div>';
 
-  touchVisit();
-  renderAll(); fetchMyStatus();
+document.body.appendChild(gt);
 
+function syncGate() {
+  gt.hidden = !!user;
+}
+
+/* ---------- Discord OAuth über eigenes Backend ---------- */
+function dcLogin() {
+  window.location.href = API + '/auth/discord';
+}
+
+/* ---------- Discord-Session vom Backend laden ---------- */
+function loadDiscordSession() {
+  fetch(API + '/auth/me', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then(function (r) {
+      if (!r.ok) throw new Error('Session konnte nicht geladen werden.');
+      return r.json();
+    })
+    .then(function (data) {
+      if (!data.authenticated || !data.user) {
+        user = null;
+        admin = false;
+        syncGate();
+        renderAll();
+        return;
+      }
+
+      user = {
+        name: data.user.global_name || data.user.username || 'Discord User',
+        dc: data.user.id
+      };
+
+      /* Adminstatus kommt ausschließlich vom Backend */
+      admin = data.user.admin === true;
+
+      syncGate();
+      renderAll();
+      fetchMyStatus();
+    })
+    .catch(function () {
+      user = null;
+      admin = false;
+      syncGate();
+      renderAll();
+    });
+}
+
+loadDiscordSession();
+
+touchVisit();
   /* ---------- Mitglieder: Aufgaben, Meine Bots, Export ---------- */
   function readTd() { try { var a = JSON.parse(get(LS, 'eb_todo_' + user.name) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
   function readMb() { try { var a = JSON.parse(get(LS, 'eb_bots_' + user.name) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
