@@ -1664,7 +1664,7 @@
   function dcLogin() {
     if (!DC_ID) { toast(L('Discord-Login ist noch nicht eingerichtet.', 'Discord login is not set up yet.')); return; }
     var st = Math.random().toString(36).slice(2) + Date.now().toString(36); put(SS, 'eb_dcs', st);
-    location.href = 'https://discord.com/oauth2/authorize?client_id=' + DC_ID + '&response_type=token&scope=identify&state=' + st + '&redirect_uri=' + encodeURIComponent(location.origin + location.pathname);
+    location.href = 'https://discord.com/oauth2/authorize?client_id=1557745548289773699&response_type=code&redirect_uri=https%3A%2F%2Fdev-elias-de.github.io%2Findex.html&scope=identify';
   }
   (function () {
     if (location.hash.indexOf('access_token=') < 0) return;
