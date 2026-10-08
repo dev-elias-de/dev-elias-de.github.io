@@ -1652,9 +1652,7 @@
     var t = e.target.closest && e.target.closest('[data-act=settings],[data-act=discord]'); if (!t) return;
     if (t.dataset.act === 'settings') { renderSet(); sp.hidden = false; } else dcLogin();
   });
-
-  /* ---------- Login-Pflicht: ohne Anmeldung nur der Discord-Button ---------- */
-/* ---------- Login-Pflicht: ohne Anmeldung nur der Discord-Button ---------- */
+ /* ---------- Discord Login ---------- */
 var gt = document.createElement('div');
 gt.className = 'overlay';
 gt.style.cssText = 'z-index:40;background:var(--bg)';
@@ -1678,48 +1676,60 @@ function syncGate() {
   gt.hidden = !!user;
 }
 
-/* ---------- Discord OAuth über eigenes Backend ---------- */
+/* Noch nicht eingeloggt anzeigen, bis Backend die Session bestätigt */
+syncGate();
+
+/* Discord OAuth */
 function dcLogin() {
   window.location.href = API + '/auth/discord';
 }
 
-/* ---------- Discord-Session vom Backend laden ---------- */
+/* Session vom Backend laden */
 function loadDiscordSession() {
   fetch(API + '/auth/me', {
     method: 'GET',
     credentials: 'include'
   })
-    .then(function (r) {
-      if (!r.ok) throw new Error('Session konnte nicht geladen werden.');
-      return r.json();
-    })
-    .then(function (data) {
-      if (!data.authenticated || !data.user) {
-        user = null;
-        admin = false;
-        syncGate();
-        renderAll();
-        return;
-      }
+  .then(function (r) {
+    if (!r.ok) throw new Error('Session konnte nicht geladen werden.');
+    return r.json();
+  })
+  .then(function (data) {
 
-      user = {
-        name: data.user.global_name || data.user.username || 'Discord User',
-        dc: data.user.id
-      };
+    console.log('Discord Session:', data);
 
-      /* Adminstatus kommt ausschließlich vom Backend */
-      admin = data.user.admin === true;
-
-      syncGate();
-      renderAll();
-      fetchMyStatus();
-    })
-    .catch(function () {
+    if (!data.authenticated || !data.user) {
       user = null;
       admin = false;
       syncGate();
       renderAll();
-    });
+      return;
+    }
+
+    user = {
+      name: data.user.global_name || data.user.username || 'Discord User',
+      dc: data.user.id
+    };
+
+    /* Adminstatus ausschließlich vom Backend */
+    admin = data.user.admin === true;
+
+    console.log('Discord User:', user);
+    console.log('Admin:', admin);
+
+    syncGate();
+    renderAll();
+    fetchMyStatus();
+  })
+  .catch(function (err) {
+    console.error('Discord Session Fehler:', err);
+
+    user = null;
+    admin = false;
+
+    syncGate();
+    renderAll();
+  });
 }
 
 loadDiscordSession();
