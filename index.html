@@ -1674,9 +1674,13 @@ document.body.appendChild(gt);
 
 function syncGate() {
   if (user && user.dc) {
-    gt.remove();
-  } else if (!document.body.contains(gt)) {
-    document.body.appendChild(gt);
+    gt.style.setProperty('display', 'none', 'important');
+    gt.style.setProperty('visibility', 'hidden', 'important');
+    gt.style.setProperty('pointer-events', 'none', 'important');
+  } else {
+    gt.style.removeProperty('display');
+    gt.style.removeProperty('visibility');
+    gt.style.removeProperty('pointer-events');
   }
 }
 
