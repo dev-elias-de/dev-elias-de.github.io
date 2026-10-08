@@ -1673,14 +1673,14 @@ gt.innerHTML =
 document.body.appendChild(gt);
 
 function syncGate() {
+  var gates = document.querySelectorAll('.overlay');
+
   if (user && user.dc) {
-    gt.style.setProperty('display', 'none', 'important');
-    gt.style.setProperty('visibility', 'hidden', 'important');
-    gt.style.setProperty('pointer-events', 'none', 'important');
-  } else {
-    gt.style.removeProperty('display');
-    gt.style.removeProperty('visibility');
-    gt.style.removeProperty('pointer-events');
+    gates.forEach(function (el) {
+      if (el.querySelector('[data-act="discord"]')) {
+        el.remove();
+      }
+    });
   }
 }
 
