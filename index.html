@@ -128,7 +128,7 @@ footer{flex-wrap:wrap}
 <section id="about" class="rv"><h2 id="at"></h2><p id="ab"></p></section>
 <section id="projects"><h2 id="pt" class="rv"></h2><div id="pl"></div></section>
 </main>
-<footer class="w"><span id="ft"></span><button class="ghost" id="adm" type="button">Admin</button></footer>
+<footer class="w"><span id="ft"></span></footer>
 
 <dialog id="bm"><div class="dp">
 <div class="dh"><b id="bt"></b><button class="pill" data-close type="button" aria-label="Schließen">✕</button></div>
@@ -165,6 +165,13 @@ footer{flex-wrap:wrap}
 <div id="form"></div>
 <h3>Als JSON bearbeiten</h3><textarea id="json" spellcheck="false"></textarea>
 <div style="margin-top:.5rem"><button class="sm" id="ja" type="button">JSON übernehmen</button><button class="sm" id="jc" type="button">JSON kopieren</button><button class="sm" id="jr" type="button">Zurücksetzen</button></div>
+<h3>In GitHub speichern</h3>
+<p class="muted">Für GitHub Pages. Das Token (nur dieses Repo, Contents: Read and write) bleibt nur in diesem Browser.</p>
+<label class="f">Repo (name/repo)<input id="ghr" placeholder="dev-elias-de/mein-repo" autocomplete="off"></label>
+<label class="f">Branch<input id="ghb" value="main"></label>
+<label class="f">Datei<input id="ghf" value="config.json"></label>
+<label class="f">Token<input id="ght" type="password" autocomplete="off"></label>
+<button class="sm" id="ghs" type="button">In GitHub speichern</button>
 <h3>Bot-Anfragen</h3><div id="reqs"><p class="muted">Keine Daten geladen.</p></div>
 </aside>
 <div id="toast" hidden role="status"></div>
@@ -265,7 +272,7 @@ async function send(){
 $("#fc").onclick=async()=>{try{await navigator.clipboard.writeText($("#fbt").value);toast("Kopiert")}catch{$("#fbt").select()}};
 
 // Befehlspalette
-const cmds=()=>[["Bot anfragen",openBot],["Zu Über mich",()=>go("about")],["Zu Projekten",()=>go("projects")],...cfg.links.map(l=>["Öffnen: "+l.label,()=>ext(l.url)]),["Thema wechseln",()=>{S.theme=S.theme==="dark"?"light":"dark";saveS()}],["Animationen "+(S.anim?"ausschalten":"einschalten"),()=>{S.anim=!S.anim;saveS()}],["Einstellungen",()=>$("#sm").showModal()],["Admin-Modus",toggleEdit]];
+const cmds=()=>[["Bot anfragen",openBot],["Zu Über mich",()=>go("about")],["Zu Projekten",()=>go("projects")],...cfg.links.map(l=>["Öffnen: "+l.label,()=>ext(l.url)]),["Thema wechseln",()=>{S.theme=S.theme==="dark"?"light":"dark";saveS()}],["Animationen "+(S.anim?"ausschalten":"einschalten"),()=>{S.anim=!S.anim;saveS()}],["Einstellungen",()=>$("#sm").showModal()]];
 function pal(){const q=$("#cq").value.toLowerCase();list=cmds().filter(c=>c[0].toLowerCase().includes(q));sel=Math.min(sel,Math.max(list.length-1,0));
  $("#cl2").replaceChildren(...list.map((c,i)=>el("li",{class:i===sel?"on":"",onclick:()=>run(i)},c[0])))}
 function run(i){if(!list[i])return;$("#cp").close();list[i][1]()}
@@ -274,7 +281,7 @@ $("#ck").onclick=openPal;$("#cq").oninput=()=>{sel=0;pal()};
 $("#cq").onkeydown=e=>{if(e.key==="ArrowDown"){e.preventDefault();sel=Math.min(sel+1,list.length-1);pal()}else if(e.key==="ArrowUp"){e.preventDefault();sel=Math.max(sel-1,0);pal()}else if(e.key==="Enter")run(sel)};
 addEventListener("keydown",e=>{const k=e.key.toLowerCase();
  if(k==="k"&&(e.ctrlKey||e.metaKey)){e.preventDefault();openPal()}
- if(k==="e"&&e.ctrlKey&&e.shiftKey){e.preventDefault();toggleEdit()}});
+});
 
 // Admin-Modus
 function field(o,k){const long=String(o[k]).length>60;return el("label",{class:"f"},LB[k]||k,el(long?"textarea":"input",{value:o[k],rows:3,oninput:e=>{o[k]=e.target.value;changed()}}))}
@@ -296,26 +303,58 @@ async function save(){
 $("#ja").onclick=()=>{try{const o=JSON.parse($("#json").value);if(!o||typeof o!=="object"||Array.isArray(o))throw 0;cfg=merge(o);buildForm();changed()}catch{st("Ungültiges JSON. Es braucht ein Objekt.")}};
 $("#jc").onclick=async()=>{try{await navigator.clipboard.writeText($("#json").value);st("JSON kopiert.")}catch{$("#json").select();st("Markiert. Kopiere mit Strg+C.")}};
 $("#jr").onclick=()=>{cfg=structuredClone(DEF);buildForm();changed()};
+const GH={};
+try{Object.assign(GH,JSON.parse(localStorage.getItem("dev-gh")||"{}"))}catch{}
+["ghr","ghb","ghf","ght"].forEach((id,i)=>{const k=["repo","branch","path","token"][i];if(GH[k])$("#"+id).value=GH[k]});
+$("#ghs").onclick=async()=>{
+ const g=id=>$("#"+id).value.trim(),repo=g("ghr"),branch=g("ghb")||"main",path=g("ghf")||"config.json",token=g("ght");
+ if(!/^[\w.-]+\/[\w.-]+$/.test(repo)||!token)return st("Trage Repo (name/repo) und Token ein.");
+ try{localStorage.setItem("dev-gh",JSON.stringify({repo,branch,path,token}))}catch{}
+ const u="https://api.github.com/repos/"+repo+"/contents/"+path.split("/").map(encodeURIComponent).join("/"),h={Authorization:"Bearer "+token,Accept:"application/vnd.github+json"};
+ st("Speichere in GitHub …");
+ try{
+  const r=await fetch(u+"?ref="+encodeURIComponent(branch),{headers:h});let sha;
+  if(r.ok)sha=(await r.json()).sha;else if(r.status!==404)throw new Error("Lesen: "+r.status);
+  const body={message:"Website-Inhalt aktualisiert",branch,content:btoa(unescape(encodeURIComponent(JSON.stringify(cfg,null,2)))),...(sha?{sha}:{})};
+  const w=await fetch(u,{method:"PUT",headers:{...h,"Content-Type":"application/json"},body:JSON.stringify(body)});
+  if(!w.ok)throw new Error("Schreiben: "+w.status);
+  st("In GitHub gespeichert. Pages braucht etwa eine Minute zum Aktualisieren.");
+ }catch(e){st("GitHub-Fehler ("+e.message+"). Prüfe Repo, Branch und Token.")}
+};
 function toggleEdit(){
  if(!canEdit){toast("Kein Zugriff. Der Admin-Modus ist nur für den Besitzer.");return}
  editing=!editing;root.classList.toggle("ed",editing);$("#dr").hidden=!editing;if(editing)buildForm();
 }
-$("#adm").onclick=toggleEdit;$("#dc").onclick=toggleEdit;
+$("#dc").onclick=toggleEdit;
+// Login nur per Konsole: adminLogin("passwort"). Im Code steht nur ein PBKDF2-Hash.
+let tries=0,reqSub=false;
+const HASH="50dd0af8562c3a1aa61b6d100310ccafb84014ffd6794f9f44e7d1a1b74b039e";
+window.adminLogin=async pw=>{
+ if(tries>=5)return"Zu viele Versuche. Lade die Seite neu.";
+ try{
+  const enc=new TextEncoder(),k=await crypto.subtle.importKey("raw",enc.encode(String(pw)),"PBKDF2",false,["deriveBits"]);
+  const b=await crypto.subtle.deriveBits({name:"PBKDF2",salt:enc.encode("elias-site-v1"),iterations:200000,hash:"SHA-256"},k,256);
+  const hex=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+  if(hex!==HASH){tries++;return"Falsches Passwort."}
+  canEdit=true;if(window.subReq&&!reqSub){reqSub=true;window.subReq()}
+  if(!editing)toggleEdit();toast("Admin-Modus freigeschaltet");return"Freigeschaltet.";
+ }catch{return"Fehler beim Prüfen."}
+};
 
 applyS();render();
 (async()=>{
  const c=window.claude;
  try{user=c&&await c.use("user")}catch{}
  try{db=c&&await c.use("db")}catch{}
- canEdit=!!(user&&user.canEdit());
+ canEdit=false;
  if(db){
   docRef=db.doc("site/main");
   docRef.onSnapshot(s=>{if(!editing&&s.exists&&s.data().cfg){cfg=merge(s.data().cfg);render()}},()=>{});
-  if(canEdit)db.collection("requests").onSnapshot(s=>{
+  window.subReq=()=>db.collection("requests").onSnapshot(s=>{
    const all=[];s.docs.forEach(d=>(d.data().items||[]).forEach(i=>all.push(i)));all.sort((a,b)=>b.ts-a.ts);
    $("#reqs").replaceChildren(...(all.length?all.map(i=>el("div",{class:"req"},el("b",{textContent:i.bot+" von "+i.discord}),el("p",{textContent:(i.feats?"Funktionen: "+i.feats.join(", ")+"\n":"")+i.desc+(i.cmds?"\nBefehle: "+i.cmds:"")+(i.deadline?"\nBis: "+i.deadline:"")}))):[el("p",{class:"muted"},"Noch keine Anfragen.")]));
   },()=>{});
- }else{try{const x=localStorage.getItem("dev-cfg");if(x){cfg=merge(JSON.parse(x));render()}}catch{}}
+ }else{try{const r=await fetch("config.json",{cache:"no-store"});if(r.ok){cfg=merge(await r.json());render();return}}catch{}try{const x=localStorage.getItem("dev-cfg");if(x){cfg=merge(JSON.parse(x));render()}}catch{}}
 })();
 </script>
 </body>
