@@ -1568,60 +1568,7 @@
     if (t.dataset.act === 'settings') { renderSet(); sp.hidden = false; } else dcLogin();
   });
 
-  /* ---------- Discord OAuth / Backend-Session ---------- */
-  //var gt = document.createElement('div');
-   // gt.className = 'overlay';
- //   gt.style.cssText = 'z-index:40;background:var(--bg)';
- // gt.innerHTML = '<div style="max-width:380px;text-align:center;display:flex;flex-direction:column;gap:14px"><h2 style="margin:0;font-size:2rem;letter-spacing:-.03em">' + esc(L('Willkommen', 'Welcome')) + '</h2><p class="hint" style="margin:0 auto">' + esc(L('Melde dich mit Discord an, um die Seite zu nutzen.', 'Sign in with Discord to use this site.')) + '</p><button class="btn solid wide" type="button" data-act="discord">' + esc(L('Mit Discord anmelden', 'Sign in with Discord')) + '</button></div>';
-  //document.body.appendChild(gt);
-
-  //function syncGate() {
- //   gt.hidden = !!(user && user.dc);
-  }
-
- // function dcLogin() {
- //   window.location.href = API + '/auth/discord';
-  }
-
- // function loadDiscordSession() {
- //   fetch(API + '/auth/me', { credentials: 'include', cache: 'no-store' })
-      //.then(function (r) {
-        //if (!r.ok) throw new Error('Session konnte nicht geladen werden.');
-        //return r.json();
-      //})
-      //.then(function (data) {
-      //  if (!data.authenticated || !data.user) {
-       //   user = null;
-     //     admin = false;
-     //     draft = null; dtexts = null; dfiles = null; dreqs = null;
-     //     renderAll();
-     ////     return;
-      //  }
-    //    user = {
-   //////       name: data.user.global_name || data.user.username || 'Discord User',
-      //    dc: data.user.id,
-      //    since: get(LS, 'eb_discord_since_' + data.user.id) || new Date().toISOString()
-     //   };
-     //   put(LS, 'eb_discord_since_' + data.user.id, user.since);
-     //   admin = data.user.admin === true;
-   //     draft = admin ? clone(links) : null;
-   //     dtexts = admin ? clone(texts) : null;
-   //     dfiles = admin ? clone(files) : null;
-   //     dreqs = admin ? clone(reqs) : null;
-   //     renderAll();
-  //      fetchMyStatus();
-  ////    })
-  //    .catch(function () {
-  //      user = null;
-  //      admin = false;
-  //      draft = null; dtexts = null; dfiles = null; dreqs = null;
- //       renderAll();
-  //    });
- // }
-//
- // loadDiscordSession();
- // touchVisit();
-//  renderAll();
+ 
 
   /* ---------- Mitglieder: Aufgaben, Meine Bots, Export ---------- */
   function readTd() { try { var a = JSON.parse(get(LS, 'eb_todo_' + user.name) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
