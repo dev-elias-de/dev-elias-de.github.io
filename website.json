@@ -1,0 +1,38 @@
+{
+  "greeting": "Hallo, ich bin",
+  "name": "Elias",
+  "roles": "Entwickler, Bot-Builder, Tüftler",
+  "aboutTitle": "Über mich",
+  "about": "Ich bin ein Developer.",
+  "projectsTitle": "Projekte",
+  "projects": [
+    {
+      "label": "Meine Website",
+      "text": "Diese Website ist Open Source",
+      "url": "https://github.com/dev-elias-de"
+    },
+    {
+      "label": "Discord Bot",
+      "text": "Coming Soon",
+      "url": "coming-soon-page-e.netlify.app"
+    }
+  ],
+  "links": [
+    {
+      "label": "GitHub",
+      "text": " Mein Github",
+      "url": "https://github.com/dev-elias-de"
+    },
+    {
+      "label": "Discord",
+      "text": "Meine Discord Community",
+      "url": "https://discord.gg/ySwntZUFBh"
+    }
+  ],
+  "botButton": "Bot anfragen",
+  "botTitle": "Eigenen Discord-Bot anfragen",
+  "botIntro": "Wähle aus, was dein Bot können soll. Das dauert eine Minute.",
+  "botFeatures": "Moderation, Musik, Tickets, Economy, Giveaways, Eigene Befehle",
+  "footer": "© 2026 Elias",
+  "skills": " Python, Discord Bots, Web, Open Source"
+}
