@@ -307,8 +307,7 @@
   .nv:hover{border-color:var(--fg);color:var(--fg)}
   .nv[aria-selected=true],.nv[aria-selected=true]:hover{background:var(--fg);border-color:var(--fg);color:var(--bg)}
   .nv:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
-  .wrap[data-pg=start] .sec[data-pg]:not([data-pg=start]),.wrap[data-pg=bot] .sec[data-pg]:not([data-pg=bot]),.wrap[data-pg=member] .sec[data-pg]:not([data-pg=member]){display:none}
-  #member .tabs{overflow-x:auto;scrollbar-width:none}#member .tab{white-space:nowrap}
+  .wrap[data-pg=start] .sec[data-pg]:not([data-pg=start]),.wrap[data-pg=bot] .sec[data-pg]:not([data-pg=bot]){display:none}
 </style>
 
 <div id="mount"></div>
@@ -323,7 +322,7 @@
       <div class="pills"><div class="dstat" id="dstat" hidden><span class="dd"></span><span class="dt"></span></div></div>
     </section>
 
-    <nav class="navtabs sec" role="tablist"><button class="nv" role="tab" data-pg="start" data-en="Start">Start</button><button class="nv" role="tab" data-pg="bot" data-en="Bot builder">Bot-Builder</button><button class="nv" role="tab" data-pg="member" data-en="Members">Mitglieder</button></nav>
+    <nav class="navtabs sec" role="tablist"><button class="nv" role="tab" data-pg="start" data-en="Start">Start</button><button class="nv" role="tab" data-pg="bot" data-en="Bot builder">Bot-Builder</button></nav>
 
     <section data-pg="start" class="sec" id="links"></section>
 
@@ -374,8 +373,6 @@
         <p class="hint" id="donadm" hidden>Admin: Spenden-Link, zum Beispiel https://ko-fi.com/deinname: <span data-t="donateurl" data-d=""></span></p>
       </div>
     </section>
-
-    <section data-pg="member" class="sec" id="member"></section>
 
     <section class="sec" id="impressum" hidden>
       <p class="label" data-en="Legal notice">Impressum</p>
@@ -448,7 +445,6 @@
   var texts = STATE.texts || {};
   var files = STATE.files || [];
   var reqs = STATE.reqs || [];
-  /* Authentifizierung kommt ausschließlich vom Discord-OAuth-Backend. */
   var user = null;
   var admin = false;
   var draft = admin ? clone(links) : null;
@@ -504,12 +500,6 @@
   /* ---------- header ---------- */
   function renderTop() {
     var h = '<div class="actions">';
-    if (user) {
-      h += '<span class="chip"><span class="av">' + icon(user.name) + '</span><span class="cn">' + esc(user.name) + '</span>' + (admin ? '<span class="tag">Admin</span>' : '') + '</span>';
-      h += '<button class="btn ghost" data-act="logout" type="button">' + L('Abmelden', 'Log out') + '</button>';
-    } else {
-      h += '<button class="btn solid" data-act="discord" type="button">' + L('Mit Discord anmelden', 'Sign in with Discord') + '</button>';
-    }
     if (!admin) h += '<button class="btn ghost" data-act="lang" type="button" aria-label="Language">' + (isEn() ? 'DE' : 'EN') + '</button>';
     h += '<button class="btn ghost icon" data-act="settings" type="button" aria-label="Einstellungen"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg></button>';
     h += '<button class="btn ghost icon" data-act="theme" type="button" aria-label="Hell oder dunkel wechseln">' + HALF + '</button></div>';
@@ -775,8 +765,7 @@
     var b = e.target.closest ? e.target.closest('[data-act]') : null;
     if (!b) return;
     var act = b.dataset.act, i = +b.dataset.i;
-    if (act === 'discord') dcLogin();
-    else if (act === 'botreq') { if (!user) { dcLogin(); } else openReq(); }
+    if (act === 'botreq') openReq();
     else if (act === 'impr') { var im = $('impressum'); im.hidden = !im.hidden; if (!im.hidden) im.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
     else if (act === 'lang') { lang = lang === 'en' ? 'de' : 'en'; put(LS, 'lang', lang); renderAll(); }
     else if (act === 'cookies') { cb.hidden = false; }
@@ -1486,7 +1475,7 @@
     if (hClicks >= 5) { hClicks = 0; confetti(); toast(L('Du hast mich gefunden.', 'You found me.')); }
   });
 
-  function renderAll() { syncGate(); renderTop(); renderLinks(); renderFiles(); renderMember(); renderSrv(); renderDonate(); renderDemo(); renderBB(); renderReqStatus(); applyTexts(); applyLang(); }
+  function renderAll() { renderTop(); renderLinks(); renderFiles(); renderSrv(); renderDonate(); renderDemo(); renderBB(); renderReqStatus(); applyTexts(); applyLang(); }
   // Discord-Status ueber Lanyard (funktioniert auf normalen Webseiten, im Artifact blockiert)
   var DID = '1509263591000510585';
   function pollStatus() {
@@ -1564,8 +1553,8 @@
     applySet(); renderSet();
   });
   document.addEventListener('click', function (e) {
-    var t = e.target.closest && e.target.closest('[data-act=settings],[data-act=discord]'); if (!t) return;
-    if (t.dataset.act === 'settings') { renderSet(); sp.hidden = false; } else dcLogin();
+    var t = e.target.closest && e.target.closest('[data-act=settings]'); if (!t) return;
+    renderSet(); sp.hidden = false;
   });
 
  
@@ -1594,7 +1583,7 @@
       l.href = u; l.download = user.name + '-daten.json'; document.body.appendChild(l); l.click(); l.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 4000); toast('Export gestartet.');
     }
   });
-  var PGS = ['start', 'bot', 'member'], wrapEl = document.querySelector('.wrap');
+  var PGS = ['start', 'bot'], wrapEl = document.querySelector('.wrap');
   wrapEl.dataset.pg = 'start';
   function syncNv() {
     var b = document.querySelector('.nv[data-pg=member]'); if (!b) return;
@@ -1607,7 +1596,9 @@
   }
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.nv'); if (b) setPg(b.dataset.pg); });
   window.addEventListener('hashchange', function () { setPg(location.hash.slice(1), true); });
-  setPg(location.hash.slice(1), true); syncNv();
+  setPg(location.hash.slice(1), true);
+
+  renderAll();
 
   // data.json aus GitHub laden (überschreibt die eingebetteten Standardwerte)
   fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
