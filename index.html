@@ -210,13 +210,6 @@ addEventListener("pointermove",e=>{mx=e.clientX;my=e.clientY;root.style.setPrope
  if(b&&S.anim&&fine){const r=b.getBoundingClientRect();b.style.transform="translate("+(mx-r.left-r.width/2)*.25+"px,"+(my-r.top-r.height/2)*.35+"px)"}
  mg=b||null;$("#cu").classList.toggle("big",!!e.target.closest?.("a,button,.chip,li"))});
 (function f(){if(fine&&S.anim){cx+=(mx-cx)*.2;cy+=(my-cy)*.2;$("#cu").style.transform="translate("+cx+"px,"+cy+"px)"}requestAnimationFrame(f)})();
-
-// Ladebildschirm
-(function(){const ld=$("#ld");setTimeout(()=>root.classList.add("go"),2600);
- if(!S.anim||matchMedia("(prefers-reduced-motion:reduce)").matches){ld.remove();root.classList.add("go");return}
- const t0=performance.now();(function f(t){const p=Math.min((t-t0)/1100,1);$("#lc").textContent=Math.round(p*p*100);
-  if(p<1)requestAnimationFrame(f);else{ld.classList.add("done");root.classList.add("go");setTimeout(()=>ld.remove(),1000)}})(t0)})();
-
 // Dialoge schließen
 document.querySelectorAll("dialog").forEach(d=>d.addEventListener("click",e=>{if(e.target===d||e.target.closest("[data-close]"))d.close()}));
 
